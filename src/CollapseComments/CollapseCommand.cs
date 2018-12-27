@@ -5,12 +5,41 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text.Outlining;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
 {
-    // TODO: need to adjust VSCT file so this shows up in the right menu
+    // TODO: need to adjust VSCT file so this shows up in the right menu (below this entry)
+    /*
+---------------------------
+VSDebug Message
+---------------------------
+Command data:
+
+    Guid = {1496A755-94DE-11D0-8C3F-00C04FC2AAE2}
+
+    GuidID = 47
+
+    CmdID = 133
+
+    Type = 0x00000001
+
+    Flags = 0x00000070
+
+    Canonical name = (null)
+
+    Localized name = Edit.CollapsetoDefinitions
+---------------------------
+OK   
+---------------------------
+     */
     // TODO: add shortcut (Ctrl+M, C ???)
+
+
+
+
     /// <summary>
     /// Command handler
     /// </summary>
@@ -71,7 +100,7 @@ namespace CollapseComments
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package)
+        public static async Task InitializeAsync(AsyncPackage package, IOutliningManagerService outliningManager, IVsTextManager textManager)
         {
             // TODO: also pass in outliningmanager & IVsTextManager
             // Switch to the main thread - the call to AddCommand in CollapseCommand's constructor requires

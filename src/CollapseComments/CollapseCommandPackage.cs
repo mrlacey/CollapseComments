@@ -1,16 +1,11 @@
 ﻿using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
+using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Text.Outlining;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
@@ -44,6 +39,10 @@ namespace CollapseComments
         /// </summary>
         public const string PackageGuidString = "02438993-d9fa-42ae-b30e-c4058e2136b3";
 
+        // TODO: get this importing correctly
+        [Import(typeof(IOutliningManagerService))]
+        public IOutliningManagerService OutliningManagerService { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CollapseCommandPackage"/> class.
         /// </summary>
@@ -54,8 +53,6 @@ namespace CollapseComments
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
         }
-
-        #region Package Members
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -69,9 +66,11 @@ namespace CollapseComments
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            await CollapseCommand.InitializeAsync(this);
-        }
 
-        #endregion
+            var txtMgr = (IVsTextManager)await base.GetServiceAsync(typeof(SVsTextManager));
+
+
+            await CollapseCommand.InitializeAsync(this, OutliningManagerService, txtMgr);
+        }
     }
 }
