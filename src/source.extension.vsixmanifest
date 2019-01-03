@@ -2,8 +2,12 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf" Version="1.0" Language="en-US" Publisher="Matt Lacey" />
-        <DisplayName>CollapseComments</DisplayName>
-        <Description>Empty VSIX Project.</Description>
+        <DisplayName>Collapse Comments</DisplayName>
+        <Description xml:space="preserve">Adds a single comand to collapse code comments in a file.</Description>
+        <MoreInfo>https://github.com/mrlacey/CollapseComments</MoreInfo>
+        <License>Resources\LICENSE</License>
+        <ReleaseNotes>https://github.com/mrlacey/CollapseComments/blob/master/CHANGELOG.md</ReleaseNotes>
+        <Icon>Resources\Icon.png</Icon>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 16.0)" />

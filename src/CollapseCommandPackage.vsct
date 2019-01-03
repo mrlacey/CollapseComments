@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidCollapseCommandPackage">
+    <Groups>
+      <Group guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      </Group>
+    </Groups>
+    <Buttons>
+      <Button guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
+        <Strings>
+          <ButtonText>Collapse Comments</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+  <KeyBindings>
+    <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
+  </KeyBindings>
+
+  <Symbols>
+    <GuidSymbol name="guidCollapseCommandPackage" value="{02438993-d9fa-42ae-b30e-c4058e2136b3}" />
+
+    <GuidSymbol name="guidCollapseCommandPackageCmdSet" value="{fafe8ebd-e623-491e-8e27-5543153918c8}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="CollapseCommandId" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
