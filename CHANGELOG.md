@@ -1,6 +1,9 @@
 # Road map
 
 - [ ] Make also collapsing usings/Imports configurable
+- [ ] Add XML support
+- [ ] Move command into the Outlining submenu
+
 
 Features that have a checkmark are complete and available for
 download in the

@@ -14,59 +14,14 @@ using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
 {
-    // TODO: need to adjust VSCT file so this shows up in the right menu (below this entry)
-    /*
----------------------------
-VSDebug Message
----------------------------
-Command data:
-
-    Guid = {1496A755-94DE-11D0-8C3F-00C04FC2AAE2}
-
-    GuidID = 47
-
-    CmdID = 133
-
-    Type = 0x00000001
-
-    Flags = 0x00000070
-
-    Canonical name = (null)
-
-    Localized name = Edit.CollapsetoDefinitions
----------------------------
-OK   
----------------------------
-     */
-
-
-
-    /// <summary>
-    /// Command handler
-    /// </summary>
     internal sealed class CollapseCommand
     {
-        /// <summary>
-        /// Command ID.
-        /// </summary>
         public const int CommandId = 0x0100;
 
-        /// <summary>
-        /// Command menu group (command set GUID).
-        /// </summary>
         public static readonly Guid CommandSet = new Guid("fafe8ebd-e623-491e-8e27-5543153918c8");
 
-        /// <summary>
-        /// VS Package that provides this command, not null.
-        /// </summary>
         private readonly AsyncPackage package;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollapseCommand"/> class.
-        /// Adds our command handlers for menu (commands must exist in the command table file)
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
-        /// <param name="commandService">Command service to add command to, not null.</param>
         private CollapseCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
@@ -81,10 +36,6 @@ OK
 
         private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
-        /// <summary>
-        /// Initializes the singleton instance of the command.
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
@@ -119,24 +70,30 @@ OK
             if (regions != null)
                 foreach (var region in regions)
                 {
-                    System.Diagnostics.Debug.WriteLine(region);
-                    if (region.IsCollapsible && !region.IsCollapsed)
+                    if (!region.IsCollapsible || region.IsCollapsed)
                     {
-                        var collapsedText = region.CollapsedForm.ToString();
+                        continue;
+                    }
 
-                        if (collapsedText == "...")
-                        {
-                            var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
+                    var collapsedText = region.CollapsedForm?.ToString();
 
-                            if (hiddenText.Contains("\r\nusing ") || hiddenText.Contains("\r\nImports"))
-                            {
-                                mgr.TryCollapse(region);
-                            }
-                        }
-                        else if (collapsedText.StartsWith("/") || collapsedText.StartsWith("'"))
+                    if (string.IsNullOrWhiteSpace(collapsedText))
+                    {
+                        continue;
+                    }
+
+                    if (collapsedText == "...")
+                    {
+                        var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
+
+                        if (hiddenText.Contains("\r\nusing ") || hiddenText.Contains("\r\nImports"))
                         {
                             mgr.TryCollapse(region);
                         }
+                    }
+                    else if (collapsedText.StartsWith("/") || collapsedText.StartsWith("'"))
+                    {
+                        mgr.TryCollapse(region);
                     }
                 }
         }

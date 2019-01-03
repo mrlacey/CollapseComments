@@ -6,13 +6,10 @@
 
   <Commands package="guidCollapseCommandPackage">
     <Groups>
-      <Group guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
-      </Group>
+      <Group guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" />
     </Groups>
     <Buttons>
       <Button guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
         <Strings>
           <ButtonText>Collapse Comments</ButtonText>
         </Strings>
@@ -22,6 +19,17 @@
   <KeyBindings>
     <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
   </KeyBindings>
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT" />
+      <!-- Below is for the outlining menu but not working - may need to allow for it to be in a subgroup? -->
+      <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_EDITOR_OUTLINING_MENU" />-->
+    </CommandPlacement>
+    <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0600">
+      <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
+    </CommandPlacement>
+  </CommandPlacements>
 
   <Symbols>
     <GuidSymbol name="guidCollapseCommandPackage" value="{02438993-d9fa-42ae-b30e-c4058e2136b3}" />
