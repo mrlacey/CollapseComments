@@ -1,10 +1,9 @@
 # Collapse Comments
 
-<!-- Replace this badge with your own-->
-[![Build status](https://ci.appveyor.com/api/projects/status/hv6uyc059rqbc6fj?svg=true)](https://ci.appveyor.com/project/madskristensen/extensibilitytools)
+[![Build status](https://ci.appveyor.com/api/projects/status/cl487k8r8rcafc1d?svg=true)](https://ci.appveyor.com/project/mrlacey/collapsecomments)
 
 Download this extension from the [VS Gallery](XXXXXX)
-or get the [CI build](XXXXX).
+or get the [CI build](http://vsixgallery.com/extension/CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf/).
 
 ---------------------------------------
 
