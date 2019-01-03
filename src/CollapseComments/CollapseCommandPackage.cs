@@ -70,6 +70,9 @@ namespace CollapseComments
             var txtMgr = (IVsTextManager)await base.GetServiceAsync(typeof(SVsTextManager));
 
 
+          //  var x = await base.GetServiceAsync(typeof(IOutliningManagerService));
+
+
             await CollapseCommand.InitializeAsync(this, OutliningManagerService, txtMgr);
         }
     }

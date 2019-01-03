@@ -3,8 +3,11 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Outlining;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -118,23 +121,52 @@ OK
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e)
+        private async void Execute(object sender, EventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            IVsTextManager txtMgr = (IVsTextManager)await ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
+            if (txtMgr == null) throw new ArgumentNullException(nameof(txtMgr));
+            int mustHaveFocus = 1;
+            txtMgr.GetActiveView(mustHaveFocus, null, out var vTextView);
+            if (!(vTextView is IVsUserData userData))
+            {
+                Console.WriteLine("No text view is currently open");
+                return;
+            }
 
-            // TODO: get current doc, pass to oultiningMgr, have mgr collapse all comments
+            var guidViewHost = Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost;
+            userData.GetData(ref guidViewHost, out var holder);
+            var viewHost = (IWpfTextViewHost)holder;
 
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "CollapseCommand";
+            var componentModel = (IComponentModel)await ServiceProvider.GetServiceAsync(typeof(SComponentModel));
+            var outliningManagerService = componentModel?.GetService<IOutliningManagerService>();
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            var mgr = outliningManagerService?.GetOutliningManager(viewHost.TextView);
+
+            var regions = mgr?.GetAllRegions(new SnapshotSpan(viewHost.TextView.TextSnapshot, 0, viewHost.TextView.TextSnapshot.Length));
+
+            if (regions != null)
+                foreach (var region in regions)
+                {
+                    System.Diagnostics.Debug.WriteLine(region);
+                    if (region.IsCollapsible && !region.IsCollapsed)
+                    {
+                        var collapsedText = region.CollapsedForm.ToString();
+
+                        if (collapsedText == "...")
+                        {
+                            var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
+
+                            if (hiddenText.Contains("\r\nusing ") || hiddenText.Contains("\r\nImports"))
+                            {
+                                mgr.TryCollapse(region);
+                            }
+                        }
+                        else if (collapsedText.StartsWith("/") || collapsedText.StartsWith("'"))
+                        {
+                            mgr.TryCollapse(region);
+                        }
+                    }
+                }
         }
     }
 }

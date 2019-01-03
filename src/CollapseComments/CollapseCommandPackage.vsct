@@ -54,9 +54,8 @@
           If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0100" type="Button">
         <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke CollapseCommand</ButtonText>
+          <ButtonText>Collapse Comments</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -71,6 +70,9 @@
       <Bitmap guid="guidImages" href="Resources\CollapseCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
     </Bitmaps>
   </Commands>
+  <KeyBindings>
+    <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
+  </KeyBindings>
 
   <Symbols>
     <!-- This is the package guid. -->
