@@ -1,0 +1,16 @@
+# Road map
+
+- [ ] Make also collapsing usings/Imports configurable
+
+Features that have a checkmark are complete and available for
+download in the
+[CI build](http://vsixgallery.com/extension/CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf/).
+
+# Change log
+
+These are the changes to each version that has been released
+on the official Visual Studio extension gallery.
+
+## 1.0
+
+- [x] Initial release
