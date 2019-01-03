@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/cl487k8r8rcafc1d?svg=true)](https://ci.appveyor.com/project/mrlacey/collapsecomments)
 
-Download this extension from the [VS Gallery](XXXXXX)
+Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments)
 or get the [CI build](http://vsixgallery.com/extension/CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf/).
 
 ---------------------------------------
