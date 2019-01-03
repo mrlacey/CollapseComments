@@ -38,8 +38,6 @@ Command data:
 OK   
 ---------------------------
      */
-    // TODO: add shortcut (Ctrl+M, C ???)
-
 
 
 
@@ -79,48 +77,22 @@ OK
             commandService.AddCommand(menuItem);
         }
 
-        /// <summary>
-        /// Gets the instance of the command.
-        /// </summary>
-        public static CollapseCommand Instance
-        {
-            get;
-            private set;
-        }
+        public static CollapseCommand Instance { get; private set; }
 
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        {
-            get
-            {
-                return this.package;
-            }
-        }
+        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
         /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package, IOutliningManagerService outliningManager, IVsTextManager textManager)
+        public static async Task InitializeAsync(AsyncPackage package)
         {
-            // TODO: also pass in outliningmanager & IVsTextManager
-            // Switch to the main thread - the call to AddCommand in CollapseCommand's constructor requires
-            // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new CollapseCommand(package, commandService);
         }
 
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
         private async void Execute(object sender, EventArgs e)
         {
             IVsTextManager txtMgr = (IVsTextManager)await ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
