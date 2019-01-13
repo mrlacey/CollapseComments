@@ -82,7 +82,7 @@ namespace CollapseComments
                         continue;
                     }
 
-                    if (collapsedText == "...")
+                    if (collapsedText == "..." || collapsedText == "Imports ...")
                     {
                         var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
 
