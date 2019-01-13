@@ -1,5 +1,6 @@
 # Road map
 
+- [x] Support install on VS2019
 - [ ] Make also collapsing usings/Imports configurable
 - [ ] Add XML support
 - [ ] Move command into the Outlining submenu
