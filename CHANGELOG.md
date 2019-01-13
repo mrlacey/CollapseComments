@@ -3,8 +3,9 @@
 - [x] Support install on VS2019
 - [x] Fix bug for .vb files where Imports sections weren't collapsed
 - [ ] Make also collapsing usings/Imports configurable
-- [ ] Add XML support
+- [x] Add XML support
 - [ ] Move command into the Outlining submenu
+- [ ] Add command to context menu on editor
 
 
 Features that have a checkmark are complete and available for

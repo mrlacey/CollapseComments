@@ -91,7 +91,7 @@ namespace CollapseComments
                             mgr.TryCollapse(region);
                         }
                     }
-                    else if (collapsedText.StartsWith("/") || collapsedText.StartsWith("'"))
+                    else if (collapsedText.StartsWith("/") || collapsedText.StartsWith("'") || collapsedText.StartsWith("<!--"))
                     {
                         mgr.TryCollapse(region);
                     }
