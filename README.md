@@ -29,4 +29,4 @@ extension for Visual Studio which enables some features
 used by this project.
 
 ## License
-[MIT](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
