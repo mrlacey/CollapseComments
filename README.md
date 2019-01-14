@@ -9,13 +9,14 @@ Supports Visual Studio 2017 & 2019
 
 ---------------------------------------
 
-Simple VSIX extension that adds a command to collapse comments in the open text file.
-
-See the [change log](CHANGELOG.md) for changes and road map.
+Simple VSIX extension that adds a command to collapse comments in the open file.
 
 ## Features
 
 - Ctrl+M, Ctrl+C collapses all comments (and using/Import statements)
+- Works with C#, VB, and XML comments
+
+See the [change log](CHANGELOG.md) for changes and road map.
 
 ## Contribute
 Check out the [contribution guidelines](CONTRIBUTING.md)

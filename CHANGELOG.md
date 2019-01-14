@@ -1,12 +1,9 @@
 # Road map
 
-- [x] Support install on VS2019
-- [x] Fix bug for .vb files where Imports sections weren't collapsed
 - [ ] Make also collapsing usings/Imports configurable
-- [x] Add XML support
 - [ ] Move command into the Outlining submenu
 - [ ] Add command to context menu on editor
-
+- [ ] [Open to suggestions ...](https://github.com/mrlacey/CollapseComments/issues/new)
 
 Features that have a checkmark are complete and available for
 download in the
@@ -16,6 +13,12 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 1.1
+
+- [x] Add XML comment support
+- [x] Support install on VS2019
+- [x] Fix bug for .vb files where Imports sections weren't collapsed
 
 ## 1.0
 
