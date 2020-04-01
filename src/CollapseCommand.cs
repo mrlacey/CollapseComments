@@ -19,9 +19,9 @@ namespace CollapseComments
 
         public static readonly Guid CommandSet = new Guid("fafe8ebd-e623-491e-8e27-5543153918c8");
 
-        private readonly AsyncPackage package;
+        private readonly CollapseCommandPackage package;
 
-        private CollapseCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private CollapseCommand(CollapseCommandPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -35,7 +35,7 @@ namespace CollapseComments
 
         private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
-        public static async Task InitializeAsync(AsyncPackage package)
+        public static async Task InitializeAsync(CollapseCommandPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
@@ -70,6 +70,8 @@ namespace CollapseComments
 
             var regions = mgr?.GetAllRegions(new SnapshotSpan(viewHost.TextView.TextSnapshot, 0, viewHost.TextView.TextSnapshot.Length));
 
+            var collapseDirectives = this.package.Options.CollapseUsingDirectives;
+
             if (regions != null)
             {
                 foreach (var region in regions)
@@ -88,11 +90,14 @@ namespace CollapseComments
 
                     if (collapsedText == "..." || collapsedText == "Imports ...")
                     {
-                        var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
-
-                        if (hiddenText.Contains("\r\nusing ") || hiddenText.Contains("\r\nImports"))
+                        if (collapseDirectives)
                         {
-                            mgr.TryCollapse(region);
+                            var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
+
+                            if (hiddenText.Contains("\r\nusing ") || hiddenText.Contains("\r\nImports"))
+                            {
+                                mgr.TryCollapse(region);
+                            }
                         }
                     }
                     else if (collapsedText.StartsWith("/") || collapsedText.StartsWith("'") || collapsedText.StartsWith("<!--"))
