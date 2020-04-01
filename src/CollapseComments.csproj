@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="CollapseCommand.cs" />
     <Compile Include="CollapseCommandPackage.cs" />
+    <Compile Include="MyRunningDocTableEvents.cs" />
     <Compile Include="OptionsPageGrid.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -5,13 +5,18 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
+using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
 {
+    [ProvideAutoLoad(UIContextGuids.SolutionHasMultipleProjects, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuids.SolutionHasSingleProject, PackageAutoLoadFlags.BackgroundLoad)]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#110", "#112", "1.1", IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", "1.2", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(CollapseCommandPackage.PackageGuidString)]
     [ProvideOptionPage(typeof(OptionsPageGrid), "Collapse Comments", "General", 0, 0, true)]
@@ -35,6 +40,14 @@ namespace CollapseComments
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             await CollapseCommand.InitializeAsync(this);
+
+            var runningDocumentTable = new RunningDocumentTable(this);
+
+            var dte = await this.GetServiceAsync(typeof(DTE)) as DTE2;
+
+            MyRunningDocTableEvents.Instance.Initialize(this, runningDocumentTable, dte);
+
+            runningDocumentTable.Advise(MyRunningDocTableEvents.Instance);
         }
     }
 }
