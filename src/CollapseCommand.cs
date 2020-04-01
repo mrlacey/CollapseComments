@@ -1,11 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Matt Lacey Ltd. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Outlining;
@@ -40,14 +39,18 @@ namespace CollapseComments
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
+            OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new CollapseCommand(package, commandService);
         }
 
         private async void Execute(object sender, EventArgs e)
         {
-            IVsTextManager txtMgr = (IVsTextManager)await ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
-            if (txtMgr == null) throw new ArgumentNullException(nameof(txtMgr));
+            IVsTextManager txtMgr = (IVsTextManager)await this.ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
+            if (txtMgr == null)
+            {
+                throw new ArgumentNullException(nameof(txtMgr));
+            }
+
             int mustHaveFocus = 1;
             txtMgr.GetActiveView(mustHaveFocus, null, out var vTextView);
             if (!(vTextView is IVsUserData userData))
@@ -60,7 +63,7 @@ namespace CollapseComments
             userData.GetData(ref guidViewHost, out var holder);
             var viewHost = (IWpfTextViewHost)holder;
 
-            var componentModel = (IComponentModel)await ServiceProvider.GetServiceAsync(typeof(SComponentModel));
+            var componentModel = (IComponentModel)await this.ServiceProvider.GetServiceAsync(typeof(SComponentModel));
             var outliningManagerService = componentModel?.GetService<IOutliningManagerService>();
 
             var mgr = outliningManagerService?.GetOutliningManager(viewHost.TextView);
@@ -68,6 +71,7 @@ namespace CollapseComments
             var regions = mgr?.GetAllRegions(new SnapshotSpan(viewHost.TextView.TextSnapshot, 0, viewHost.TextView.TextSnapshot.Length));
 
             if (regions != null)
+            {
                 foreach (var region in regions)
                 {
                     if (!region.IsCollapsible || region.IsCollapsed)
@@ -96,6 +100,7 @@ namespace CollapseComments
                         mgr.TryCollapse(region);
                     }
                 }
+            }
         }
     }
 }
