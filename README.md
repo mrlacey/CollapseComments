@@ -16,6 +16,8 @@ Simple VSIX extension that adds a command to collapse comments in the open file.
 
 - Ctrl+M, Ctrl+C collapses all comments (and using/Import statements)
 - Works with C#, VB, and XML comments
+- Can also collapse using/import directives
+- Can be configured to run when a document is opened
 
 See the [change log](CHANGELOG.md) for changes and roadmap.
 

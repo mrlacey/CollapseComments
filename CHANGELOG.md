@@ -1,8 +1,6 @@
 # Road map
 
-- [ ] Make also collapsing usings/Imports configurable
 - [ ] Move command into the Outlining submenu
-- [ ] Add command to context menu on editor
 - [ ] [Open to suggestions ...](https://github.com/mrlacey/CollapseComments/issues/new)
 
 Features that have a checkmark are complete and available for
@@ -13,6 +11,13 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 1.2
+
+- [x] Enable automatic collapse on file open
+- [x] Make also collapsing usings/Imports configurable
+- [x] Add command to context menu on editor
+
 
 ## 1.1
 
