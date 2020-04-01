@@ -23,8 +23,13 @@
   <CommandPlacements>
     <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
       <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT" />
+      <!--<Parent guid="guidSHLMainMenu" id="{9ADF33D0-8AAD-11D0-B606-00A0C922E851}"/>-->
+        
       <!-- Below is for the outlining menu but not working - may need to allow for it to be in a subgroup? -->
-      <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_EDITOR_OUTLINING_MENU" />-->
+      <!--<Parent guid="guidStdEditor" id="IDM_VS_EDITOR_OUTLINING_MENU" />-->
+    </CommandPlacement>
+    <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
     </CommandPlacement>
     <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0600">
       <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
