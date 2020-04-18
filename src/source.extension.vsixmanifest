@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf" Version="1.2" Language="en-US" Publisher="Matt Lacey" />
         <DisplayName>Collapse Comments</DisplayName>
-        <Description xml:space="preserve">Adds a comand to collapse code comments in a file.</Description>
+        <Description xml:space="preserve">Adds a command to collapse code comments in a file.</Description>
         <MoreInfo>https://github.com/mrlacey/CollapseComments</MoreInfo>
         <License>Resources\LICENSE</License>
         <ReleaseNotes>https://github.com/mrlacey/CollapseComments/blob/master/CHANGELOG.md</ReleaseNotes>
