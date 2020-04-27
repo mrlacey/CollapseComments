@@ -9,9 +9,9 @@ namespace CollapseComments
     public class OptionsPageGrid : DialogPage
     {
         [Category("General")]
-        [DisplayName("Collapse using directives")]
-        [Description("Collapse using directives (or imports in VB.NET) as well as comments.")]
-        public bool CollapseUsingDirectives { get; set; } = true;
+        [DisplayName("Include using directives")]
+        [Description("Treat using directives (or imports in VB.NET) like comments.")]
+        public bool IncludeUsingDirectives { get; set; } = true;
 
         [Category("General")]
         [DisplayName("Run when document opened")]

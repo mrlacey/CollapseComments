@@ -53,8 +53,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BaseCommand.cs" />
     <Compile Include="CollapseCommand.cs" />
     <Compile Include="CollapseCommandPackage.cs" />
+    <Compile Include="ExpandCommand.cs" />
+    <Compile Include="Mode.cs" />
     <Compile Include="MyRunningDocTableEvents.cs" />
     <Compile Include="OptionsPageGrid.cs">
       <SubType>Component</SubType>
@@ -122,5 +125,5 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project=".\signvsix.targets"/>
+  <Import Project=".\signvsix.targets" />
 </Project>

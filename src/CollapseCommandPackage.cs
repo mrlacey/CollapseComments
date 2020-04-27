@@ -16,7 +16,7 @@ namespace CollapseComments
     [ProvideAutoLoad(UIContextGuids.SolutionHasMultipleProjects, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(UIContextGuids.SolutionHasSingleProject, PackageAutoLoadFlags.BackgroundLoad)]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#110", "#112", "1.3", IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", "1.4", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(CollapseCommandPackage.PackageGuidString)]
     [ProvideOptionPage(typeof(OptionsPageGrid), "Collapse Comments", "General", 0, 0, true)]
@@ -40,6 +40,7 @@ namespace CollapseComments
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             await CollapseCommand.InitializeAsync(this);
+            await ExpandCommand.InitializeAsync(this);
 
             var runningDocumentTable = new RunningDocumentTable(this);
 

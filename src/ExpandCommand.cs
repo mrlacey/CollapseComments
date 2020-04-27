@@ -8,11 +8,11 @@ using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
 {
-    internal sealed class CollapseCommand : BaseCommand
+    internal sealed class ExpandCommand : BaseCommand
     {
-        public const int CommandId = 0x0100;
+        public const int CommandId = 0x0200;
 
-        private CollapseCommand(CollapseCommandPackage package, OleMenuCommandService commandService)
+        private ExpandCommand(CollapseCommandPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -22,19 +22,19 @@ namespace CollapseComments
             commandService.AddCommand(menuItem);
         }
 
-        public static CollapseCommand Instance { get; private set; }
+        public static ExpandCommand Instance { get; private set; }
 
         public static async Task InitializeAsync(CollapseCommandPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new CollapseCommand(package, commandService);
+            Instance = new ExpandCommand(package, commandService);
         }
 
-        private async void Execute(object sender, EventArgs e)
+        private async void Execute(object sender, EventArgs ea)
         {
-            await this.ExecuteAsync(Mode.CollapseComments);
+            await this.ExecuteAsync(Mode.ExpandComments);
         }
     }
 }

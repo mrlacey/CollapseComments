@@ -14,10 +14,16 @@
           <ButtonText>Collapse Comments</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" priority="0x0100" type="Button">
+        <Strings>
+          <ButtonText>Expand Only Comments</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
   <KeyBindings>
-    <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
+      <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
+      <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="D" />
   </KeyBindings>
 
   <CommandPlacements>
@@ -31,9 +37,12 @@
     <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
       <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
     </CommandPlacement>
-    <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0600">
-      <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
-    </CommandPlacement>
+      <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0600">
+          <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
+      </CommandPlacement>
+      <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" priority="0x0601">
+          <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
+      </CommandPlacement>
   </CommandPlacements>
 
   <Symbols>
@@ -41,7 +50,8 @@
 
     <GuidSymbol name="guidCollapseCommandPackageCmdSet" value="{fafe8ebd-e623-491e-8e27-5543153918c8}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <IDSymbol name="CollapseCommandId" value="0x0100" />
+        <IDSymbol name="CollapseCommandId" value="0x0100" />
+        <IDSymbol name="ExpandCommandId" value="0x0200" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>
