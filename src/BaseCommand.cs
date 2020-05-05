@@ -96,25 +96,7 @@ namespace CollapseComments
                     // //
                     // // Summary:
                     // //   Some details.
-                    var isComment = false;
-
-                    // In VB this will also catch imports regions which take the form "Imports ..."
-                    // This will be most things that aren't comments.
-                    if (collapsedText.EndsWith("..."))
-                    {
-                        var filtered = hiddenText.Replace("\r", string.Empty)
-                                                 .Replace("\n", string.Empty)
-                                                 .Replace("\t", string.Empty)
-                                                 .Replace(" ", string.Empty);
-
-                        isComment = filtered.StartsWith("////Summary:", StringComparison.InvariantCultureIgnoreCase);
-                    }
-                    else
-                    {
-                        isComment = IsComment(collapsedText);
-                    }
-
-                    if (isComment || IsUsing(hiddenText))
+                    if (IsComment(hiddenText) || IsUsing(hiddenText))
                     {
                         if (IsUsing(hiddenText) && !includeDirectives)
                         {
