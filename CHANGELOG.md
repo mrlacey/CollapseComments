@@ -12,6 +12,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.5
+
+- [x] Fix bug where some comments weren't being collapsed
+
 ## 1.4
 
 - [x] Add 'Expand only comments' command
