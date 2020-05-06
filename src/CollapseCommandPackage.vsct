@@ -35,7 +35,8 @@
       <!--<Parent guid="guidStdEditor" id="IDM_VS_EDITOR_OUTLINING_MENU" />-->
     </CommandPlacement>
     <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
-      <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+      <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>-->
+        <Parent guid="guidStdEditor" id="IDM_VS_EDITOR_CSCD_OUTLINING_MENU"/>
     </CommandPlacement>
       <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0600">
           <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
