@@ -11,6 +11,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.7
+
+- [x] Fix bug affecting code that uses tabs (rather than spaces)
+
 ## 1.6
 
 - [x] Move command into the Outlining submenu
