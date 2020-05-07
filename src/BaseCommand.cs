@@ -3,6 +3,7 @@
 
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
@@ -64,11 +65,6 @@ namespace CollapseComments
                     || collapsedText.Contains("\r\nImports");
             }
 
-            bool CaseInsensitiveContains(string original, string searchFor)
-            {
-                return CultureInfo.InvariantCulture.CompareInfo.IndexOf(original, searchFor, CompareOptions.IgnoreCase) >= 0;
-            }
-
             if (regions != null)
             {
                 foreach (var region in regions)
@@ -125,12 +121,12 @@ namespace CollapseComments
                             var visibleText = region.Extent.GetStartPoint(region.Extent.TextBuffer.CurrentSnapshot).GetContainingLine().GetText();
 
                             // Don't collapse higher level elements.
-                            if (!CaseInsensitiveContains(visibleText, "#region ")
-                             && !CaseInsensitiveContains(visibleText, "namespace ")
-                             && !CaseInsensitiveContains(visibleText, " class ")
-                             && !CaseInsensitiveContains(visibleText, " enum ")
-                             && !CaseInsensitiveContains(visibleText, " struct ")
-                             && !CaseInsensitiveContains(visibleText, " Module ")
+                            if (!visibleText.ContainsFollowedByWhitespaceInsensitive("#region")
+                             && !visibleText.ContainsFollowedByWhitespaceInsensitive("namespace")
+                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("class")
+                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("enum")
+                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("struct")
+                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("Module")
                              && !region.IsCollapsed && region.IsCollapsible)
                             {
                                 mgr.TryCollapse(region);
