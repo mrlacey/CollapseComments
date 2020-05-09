@@ -3,39 +3,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
-using Microsoft.VisualStudio.Utilities;
 
 namespace CollapseComments
 {
-    [Export(typeof(ITaggerProvider))]
-   // [Export(typeof(OutliningTaggerProvider))]
-    [TagType(typeof(IOutliningRegionTag))]
-    [ContentType("CSharp")]
-    public sealed class AdditionalOutliningTaggerProvider : ITaggerProvider
-    {
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
-            where T : ITag
-        {
-            // create a single tagger for each buffer.
-            return buffer.Properties.GetOrCreateSingletonProperty(() =>
-            {
-                return new ExtraCommentOutlineTagger(buffer) as ITagger<T>;
-            });
-        }
-    }
-
     public sealed class ExtraCommentOutlineTagger : ITagger<IOutliningRegionTag>
     {
-        string startHide = "/*";     //the characters that start the outlining region
-        string endHide = "*/";       //the characters that end the outlining region
-        ITextBuffer buffer;
-        ITextSnapshot snapshot;
-        List<Region> regions;
+        private readonly string startHide = "/*"; // the characters that start the outlining region
+        private readonly string endHide = "*/";   // the characters that end the outlining region
+        private ITextBuffer buffer;
+        private ITextSnapshot snapshot;
+        private List<Region> regions;
 
         public ExtraCommentOutlineTagger(ITextBuffer buffer)
         {
@@ -43,18 +24,24 @@ namespace CollapseComments
             this.snapshot = buffer.CurrentSnapshot;
             this.regions = new List<Region>();
             this.ReParse();
-            this.buffer.Changed += BufferChanged;
+            this.buffer.Changed += this.BufferChanged;
         }
+
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
         public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             if (spans.Count == 0)
+            {
                 yield break;
+            }
+
             List<Region> currentRegions = this.regions;
             ITextSnapshot currentSnapshot = this.snapshot;
             SnapshotSpan entire = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End).TranslateTo(currentSnapshot, SpanTrackingMode.EdgeExclusive);
             int startLineNumber = entire.Start.GetContainingLine().LineNumber;
             int endLineNumber = entire.End.GetContainingLine().LineNumber;
+
             foreach (var region in currentRegions)
             {
                 if (region.StartLine <= endLineNumber &&
@@ -93,12 +80,35 @@ namespace CollapseComments
             }
         }
 
-        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+        private static bool TryGetLevel(string text, int startIndex, out int level)
+        {
+            level = -1;
 
-        void BufferChanged(object sender, TextContentChangedEventArgs e)
+            if (text.Length > startIndex + 3)
+            {
+                if (int.TryParse(text.Substring(startIndex + 1), out level))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static SnapshotSpan AsSnapshotSpan(Region region, ITextSnapshot snapshot)
+        {
+            var startLine = snapshot.GetLineFromLineNumber(region.StartLine);
+            var endLine = (region.StartLine == region.EndLine)
+                        ? startLine
+                        : snapshot.GetLineFromLineNumber(region.EndLine);
+
+            return new SnapshotSpan(startLine.Start + region.StartOffset, endLine.End);
+        }
+
+        private void BufferChanged(object sender, TextContentChangedEventArgs e)
         {
             // If this isn't the most up-to-date version of the buffer, then ignore it for now (we'll eventually get another change event).
-            if (e.After != buffer.CurrentSnapshot)
+            if (e.After != this.buffer.CurrentSnapshot)
             {
                 return;
             }
@@ -106,9 +116,9 @@ namespace CollapseComments
             this.ReParse();
         }
 
-        void ReParse()
+        private void ReParse()
         {
-            ITextSnapshot newSnapshot = buffer.CurrentSnapshot;
+            ITextSnapshot newSnapshot = this.buffer.CurrentSnapshot;
             List<Region> newRegions = new List<Region>();
 
             // keep the current (deepest) partial region, which will have
@@ -120,8 +130,7 @@ namespace CollapseComments
                 int regionStart = -1;
                 string text = line.GetText();
 
-                // lines that contain a "[" denote the start of a new region.
-                if ((regionStart = text.IndexOf(startHide, StringComparison.Ordinal)) != -1)
+                if ((regionStart = text.IndexOf(this.startHide, StringComparison.Ordinal)) != -1)
                 {
                     int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
                     int newLevel;
@@ -150,9 +159,9 @@ namespace CollapseComments
                             PartialParent = currentRegion.PartialParent,
                         };
                     }
-                    //this is a new (sub)region
                     else
                     {
+                        // this is a new (sub)region
                         currentRegion = new PartialRegion()
                         {
                             Level = newLevel,
@@ -162,8 +171,7 @@ namespace CollapseComments
                         };
                     }
                 }
-                // lines that contain "]" denote the end of a region
-                else if ((regionStart = text.IndexOf(endHide, StringComparison.Ordinal)) != -1)
+                else if ((regionStart = text.IndexOf(this.endHide, StringComparison.Ordinal)) != -1)
                 {
                     int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
                     int closingLevel;
@@ -233,28 +241,6 @@ namespace CollapseComments
                           new SnapshotSpan(this.snapshot, Span.FromBounds(changeStart, changeEnd))));
                 }
             }
-        }
-
-        static bool TryGetLevel(string text, int startIndex, out int level)
-        {
-            level = -1;
-            if (text.Length > startIndex + 3)
-            {
-                if (int.TryParse(text.Substring(startIndex + 1), out level))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        static SnapshotSpan AsSnapshotSpan(Region region, ITextSnapshot snapshot)
-        {
-            var startLine = snapshot.GetLineFromLineNumber(region.StartLine);
-            var endLine = (region.StartLine == region.EndLine) ? startLine
-                 : snapshot.GetLineFromLineNumber(region.EndLine);
-            return new SnapshotSpan(startLine.Start + region.StartOffset, endLine.End);
         }
 
         private class PartialRegion
