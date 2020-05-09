@@ -2,8 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
+using System.Linq;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
@@ -48,10 +47,20 @@ namespace CollapseComments
 
             var mgr = outliningManagerService?.GetOutliningManager(viewHost.TextView);
 
-            var regions = mgr?.GetAllRegions(new SnapshotSpan(viewHost.TextView.TextSnapshot, 0, viewHost.TextView.TextSnapshot.Length));
+            var regions = mgr?.GetAllRegions(new SnapshotSpan(viewHost.TextView.TextSnapshot, 0, viewHost.TextView.TextSnapshot.Length))
+                              .ToList();
 
             var includeDirectives = this.package.Options.IncludeUsingDirectives;
 
+            // Support XMLDoc format comments
+            //  <summary>
+            //  Some details.
+            //  </summary>
+            //
+            // and support generated comments from decompiled code
+            // //
+            // // Summary:
+            // //   Some details.
             bool IsComment(string collapsedText)
             {
                 return collapsedText.StartsWith("/")
@@ -65,10 +74,37 @@ namespace CollapseComments
                     || collapsedText.Contains("\r\nImports");
             }
 
+            bool HasNestedCommentRegion(int regionId, int end)
+            {
+                for (int i = regionId + 1; i < regions.Count; i++)
+                {
+                    var region = regions[i];
+
+                    var regionStart = region.Extent.GetSpan(viewHost.TextView.TextSnapshot).Start;
+
+                    if (regionStart < end)
+                    {
+                        var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
+
+                        if (IsComment(hiddenText))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+
             if (regions != null)
             {
-                foreach (var region in regions)
+                // var sortedRegions = regions.OrderBy(r => r.)
+                var regionCount = regions.Count();
+
+                for (int i = 0; i < regionCount; i++)
                 {
+                    var region = regions[i];
+
                     if (!region.IsCollapsible)
                     {
                         continue;
@@ -80,18 +116,8 @@ namespace CollapseComments
                         continue;
                     }
 
-                    var collapsedText = region.CollapsedForm?.ToString();
                     var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
 
-                    // Support XMLDoc format comments
-                    //  <summary>
-                    //  Some details.
-                    //  </summary>
-                    //
-                    // and support generated comments from decompiled code
-                    // //
-                    // // Summary:
-                    // //   Some details.
                     if (IsComment(hiddenText) || IsUsing(hiddenText))
                     {
                         if (IsUsing(hiddenText) && !includeDirectives)
@@ -118,18 +144,14 @@ namespace CollapseComments
                     {
                         if (mode == Mode.ExpandComments)
                         {
-                            var visibleText = region.Extent.GetStartPoint(region.Extent.TextBuffer.CurrentSnapshot).GetContainingLine().GetText();
-
-                            // Don't collapse higher level elements.
-                            if (!visibleText.ContainsFollowedByWhitespaceInsensitive("#region")
-                             && !visibleText.ContainsFollowedByWhitespaceInsensitive("namespace")
-                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("class")
-                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("enum")
-                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("struct")
-                             && !visibleText.ContainsSurroundedByWhitespaceInsensitive("Module")
-                             && !region.IsCollapsed && region.IsCollapsible)
+                            if (!region.IsCollapsed && region.IsCollapsible)
                             {
-                                mgr.TryCollapse(region);
+                                var hasNested = HasNestedCommentRegion(i, region.Extent.GetSpan(viewHost.TextView.TextSnapshot).End);
+
+                                if (!hasNested)
+                                {
+                                    mgr.TryCollapse(region);
+                                }
                             }
                         }
                     }
