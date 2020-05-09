@@ -57,6 +57,7 @@
     <Compile Include="CollapseCommand.cs" />
     <Compile Include="CollapseCommandPackage.cs" />
     <Compile Include="ExpandCommand.cs" />
+    <Compile Include="ExtraCommentOutlineTagger.cs" />
     <Compile Include="Mode.cs" />
     <Compile Include="MyRunningDocTableEvents.cs" />
     <Compile Include="OptionsPageGrid.cs">
