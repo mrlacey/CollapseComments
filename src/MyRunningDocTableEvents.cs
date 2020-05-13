@@ -14,7 +14,9 @@ namespace CollapseComments
         private static MyRunningDocTableEvents instance;
 
         private CollapseCommandPackage package;
+#pragma warning disable IDE0052 // Remove unread private members - Keep this as may need it one-day.
         private RunningDocumentTable runningDocumentTable;
+#pragma warning restore IDE0052 // Remove unread private members
         private DTE2 dte;
 
         public MyRunningDocTableEvents()

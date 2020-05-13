@@ -14,7 +14,7 @@ namespace CollapseComments
     {
         private readonly string startHide = "/*"; // the characters that start the outlining region
         private readonly string endHide = "*/";   // the characters that end the outlining region
-        private ITextBuffer buffer;
+        private readonly ITextBuffer buffer;
         private ITextSnapshot snapshot;
         private List<Region> regions;
 
@@ -133,8 +133,8 @@ namespace CollapseComments
                 if ((regionStart = text.IndexOf(this.startHide, StringComparison.Ordinal)) != -1)
                 {
                     int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
-                    int newLevel;
-                    if (!TryGetLevel(text, regionStart, out newLevel))
+
+                    if (!TryGetLevel(text, regionStart, out int newLevel))
                     {
                         newLevel = currentLevel + 1;
                     }
@@ -174,8 +174,8 @@ namespace CollapseComments
                 else if ((regionStart = text.IndexOf(this.endHide, StringComparison.Ordinal)) != -1)
                 {
                     int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
-                    int closingLevel;
-                    if (!TryGetLevel(text, regionStart, out closingLevel))
+
+                    if (!TryGetLevel(text, regionStart, out int closingLevel))
                     {
                         closingLevel = currentLevel;
                     }
@@ -233,13 +233,11 @@ namespace CollapseComments
             if (changeStart <= changeEnd)
             {
                 ITextSnapshot snap = this.snapshot;
-                if (this.TagsChanged != null)
-                {
-                    this.TagsChanged(
-                        this,
-                        new SnapshotSpanEventArgs(
-                          new SnapshotSpan(this.snapshot, Span.FromBounds(changeStart, changeEnd))));
-                }
+
+                this.TagsChanged?.Invoke(
+                    this,
+                    new SnapshotSpanEventArgs(
+                      new SnapshotSpan(this.snapshot, Span.FromBounds(changeStart, changeEnd))));
             }
         }
 

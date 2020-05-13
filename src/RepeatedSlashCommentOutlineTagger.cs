@@ -12,9 +12,7 @@ namespace CollapseComments
 {
     public sealed class RepeatedSlashCommentOutlineTagger : ITagger<IOutliningRegionTag>
     {
-        private readonly string startHide = "/*"; // the characters that start the outlining region
-        private readonly string endHide = "*/";   // the characters that end the outlining region
-        private ITextBuffer buffer;
+        private readonly ITextBuffer buffer;
         private ITextSnapshot snapshot;
         private List<SimpleRegion> regions;
 
