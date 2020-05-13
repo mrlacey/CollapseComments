@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Text.Tagging;
 
 namespace CollapseComments
 {
-    public sealed class ExtraCommentOutlineTagger : ITagger<IOutliningRegionTag>
+    public sealed class SlashStarCommentOutlineTagger : ITagger<IOutliningRegionTag>
     {
         private readonly string startHide = "/*"; // the characters that start the outlining region
         private readonly string endHide = "*/";   // the characters that end the outlining region
@@ -18,7 +18,7 @@ namespace CollapseComments
         private ITextSnapshot snapshot;
         private List<Region> regions;
 
-        public ExtraCommentOutlineTagger(ITextBuffer buffer)
+        public SlashStarCommentOutlineTagger(ITextBuffer buffer)
         {
             this.buffer = buffer;
             this.snapshot = buffer.CurrentSnapshot;

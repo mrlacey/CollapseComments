@@ -11,7 +11,7 @@ namespace CollapseComments
     [Export(typeof(ITaggerProvider))]
     [TagType(typeof(IOutliningRegionTag))]
     [ContentType("CSharp")]
-    public sealed class AdditionalOutliningTaggerProvider : ITaggerProvider
+    public sealed class SlashStarOutliningTaggerProvider : ITaggerProvider
     {
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
             where T : ITag
@@ -19,7 +19,7 @@ namespace CollapseComments
             // create a single tagger for each buffer.
             return buffer.Properties.GetOrCreateSingletonProperty(() =>
             {
-                return new ExtraCommentOutlineTagger(buffer) as ITagger<T>;
+                return new SlashStarCommentOutlineTagger(buffer) as ITagger<T>;
             });
         }
     }

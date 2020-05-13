@@ -53,18 +53,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AdditionalOutliningTaggerProvider.cs" />
     <Compile Include="BaseCommand.cs" />
     <Compile Include="CollapseCommand.cs" />
     <Compile Include="CollapseCommandPackage.cs" />
     <Compile Include="ExpandCommand.cs" />
-    <Compile Include="ExtraCommentOutlineTagger.cs" />
     <Compile Include="Mode.cs" />
     <Compile Include="MyRunningDocTableEvents.cs" />
     <Compile Include="OptionsPageGrid.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepeatedSlashCommentOutlineTagger.cs" />
+    <Compile Include="RepeatedSlashOutliningTaggerProvider.cs" />
+    <Compile Include="SlashStarCommentOutlineTagger.cs" />
+    <Compile Include="SlashStarOutliningTaggerProvider.cs" />
     <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
