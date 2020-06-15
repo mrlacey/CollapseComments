@@ -74,8 +74,9 @@
       <Link>Resources\LICENSE</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\Icon.png">
+    <Content Include="Resources\CollapseComments-Logo.png">
       <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
@@ -91,7 +92,6 @@
     <VSCTCompile Include="CollapseCommandPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="Resources\CollapseCommandPackage.ico" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
