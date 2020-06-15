@@ -11,6 +11,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.8/9
+
+- [x] Fix resource related issues
+
 ## 1.7
 
 - [x] Fix bug affecting code that uses tabs (rather than spaces)
