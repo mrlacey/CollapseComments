@@ -50,7 +50,7 @@ namespace CollapseComments
 
                     var shortText = startLine.GetText().Trim();
 
-                    if (shortText.Equals("//") || shortText.Equals("////"))
+                    if (shortText.Equals("//") || shortText.Equals("///") || shortText.Equals("////"))
                     {
                         shortText += " ...";
                     }
@@ -114,8 +114,8 @@ namespace CollapseComments
 
                 var isCommentOfInterest = false;
 
-                if (trimText == "//" || trimText == "////"
-                 || trimText.StartsWith("// ") || trimText.StartsWith("////"))
+                if (trimText == "//" || trimText == "///" || trimText == "////"
+                 || trimText.StartsWith("// ") || trimText.StartsWith("/// ") || trimText.StartsWith("////"))
                 {
                     isCommentOfInterest = true;
                 }
