@@ -20,7 +20,6 @@ namespace CollapseComments
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(CollapseCommandPackage.PackageGuidString)]
     [ProvideOptionPage(typeof(OptionsPageGrid), "Collapse Comments", "General", 0, 0, true)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class CollapseCommandPackage : AsyncPackage
     {
         public const string PackageGuidString = "02438993-d9fa-42ae-b30e-c4058e2136b3";

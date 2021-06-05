@@ -12,11 +12,13 @@ namespace CollapseComments
     {
         private readonly RepeatedSlashCommentOutlineTagger repeatedSlashTagger;
         private readonly SlashStarCommentOutlineTagger slashStarTagger;
+        private readonly MultiLineStringOutlineTagger multiLineStringTagger;
 
         public AllCommentsTagger(ITextBuffer buffer)
         {
             this.repeatedSlashTagger = new RepeatedSlashCommentOutlineTagger(buffer);
             this.slashStarTagger = new SlashStarCommentOutlineTagger(buffer);
+            this.multiLineStringTagger = new MultiLineStringOutlineTagger(buffer);
         }
 
 #pragma warning disable CS0067 // Event not called - This is a wrapper. The child instances call their versions
@@ -29,6 +31,7 @@ namespace CollapseComments
 
             result.AddRange(this.repeatedSlashTagger.GetTags(spans));
             result.AddRange(this.slashStarTagger.GetTags(spans));
+            result.AddRange(this.multiLineStringTagger.GetTags(spans));
 
             return result;
         }
