@@ -8,5 +8,7 @@ namespace CollapseComments
         CollapseComments,
 
         ExpandComments,
+
+        ToggleComments,
     }
 }

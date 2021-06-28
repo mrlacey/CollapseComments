@@ -69,6 +69,7 @@
     <Compile Include="RepeatedSlashCommentOutlineTagger.cs" />
     <Compile Include="SlashStarCommentOutlineTagger.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="ToggleCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\LICENSE">

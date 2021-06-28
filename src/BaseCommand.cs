@@ -125,14 +125,15 @@ namespace CollapseComments
                             continue;
                         }
 
-                        if (mode == Mode.CollapseComments)
+                        if (mode == Mode.CollapseComments || mode == Mode.ToggleComments)
                         {
                             if (!region.IsCollapsed && region.IsCollapsible)
                             {
                                 mgr.TryCollapse(region);
                             }
                         }
-                        else if (mode == Mode.ExpandComments)
+
+                        if (mode == Mode.ExpandComments || mode == Mode.ToggleComments)
                         {
                             if (region.IsCollapsed && region is ICollapsed collapsed)
                             {
