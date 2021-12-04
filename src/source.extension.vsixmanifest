@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf" Version="2.0" Language="en-US" Publisher="Matt Lacey" />
         <DisplayName>Collapse Comments</DisplayName>
-        <Description xml:space="preserve">Improve the way you work with comments in code.</Description>
+        <Description xml:space="preserve">Improve the way you work with comments in code by easily (&amp; automatically) expanding and collapsing comments.</Description>
         <MoreInfo>https://github.com/mrlacey/CollapseComments</MoreInfo>
         <License>Resources\LICENSE</License>
         <ReleaseNotes>https://github.com/mrlacey/CollapseComments/blob/master/CHANGELOG.md</ReleaseNotes>
