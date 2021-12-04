@@ -59,6 +59,7 @@
     <Compile Include="CollapseCommand.cs" />
     <Compile Include="CollapseCommandPackage.cs" />
     <Compile Include="ExpandCommand.cs" />
+    <Compile Include="GeneralOutputPane.cs" />
     <Compile Include="Mode.cs" />
     <Compile Include="MyRunningDocTableEvents.cs" />
     <Compile Include="OptionsPageGrid.cs">
@@ -68,6 +69,8 @@
     <Compile Include="MultiLineStringOutlineTagger.cs" />
     <Compile Include="RepeatedSlashCommentOutlineTagger.cs" />
     <Compile Include="SlashStarCommentOutlineTagger.cs" />
+    <Compile Include="SponsorDetector.cs" />
+    <Compile Include="SponsorRequestHelper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="ToggleCommand.cs" />
   </ItemGroup>

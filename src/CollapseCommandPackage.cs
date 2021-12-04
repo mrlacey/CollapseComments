@@ -16,7 +16,7 @@ namespace CollapseComments
     [ProvideAutoLoad(UIContextGuids.SolutionHasMultipleProjects, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(UIContextGuids.SolutionHasSingleProject, PackageAutoLoadFlags.BackgroundLoad)]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#110", "#112", "1.11")] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", "1.12")] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(CollapseCommandPackage.PackageGuidString)]
     [ProvideOptionPage(typeof(OptionsPageGrid), "Collapse Comments", "General", 0, 0, true)]
@@ -49,6 +49,8 @@ namespace CollapseComments
             MyRunningDocTableEvents.Instance.Initialize(this, runningDocumentTable, dte);
 
             runningDocumentTable.Advise(MyRunningDocTableEvents.Instance);
+
+            await SponsorRequestHelper.CheckIfNeedToShowAsync();
         }
     }
 }
