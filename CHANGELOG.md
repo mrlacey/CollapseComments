@@ -11,6 +11,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 2.0
+
+- [x] Change to target VS2022.
+
 ## 1.12
 
 - [x] Add Sponsor request prompt.

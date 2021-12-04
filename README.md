@@ -6,7 +6,7 @@
 Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments)
 or get the [CI build](http://vsixgallery.com/extension/CollapseComments.a1dfaad6-6e8d-420a-807b-ebbbc0e7a6bf/).
 
-Supports Visual Studio 2017 & 2019
+Supports Visual Studio 2017, 2019, & 2022
 
 ---------------------------------------
 
