@@ -59,6 +59,11 @@
     <Compile Include="BaseCommand.cs" />
     <Compile Include="CollapseCommand.cs" />
     <Compile Include="CollapseCommandPackage.cs" />
+    <Compile Include="CollapseCommandPackage1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CollapseCommandPackage.vsct</DependentUpon>
+    </Compile>
     <Compile Include="ExpandCommand.cs" />
     <Compile Include="GeneralOutputPane.cs" />
     <Compile Include="Mode.cs" />
@@ -104,6 +109,8 @@
   <ItemGroup>
     <VSCTCompile Include="CollapseCommandPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
+      <Generator>VsctGenerator</Generator>
+      <LastGenOutput>CollapseCommandPackage1.cs</LastGenOutput>
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,12 +123,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="VSPackage.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <ManifestResourceName>VSPackage</ManifestResourceName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SDK">
