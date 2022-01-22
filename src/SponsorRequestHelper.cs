@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
@@ -25,6 +26,8 @@ namespace CollapseComments
 
         private static void ShowThanksForSponsorshipMessage()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             GeneralOutputPane.Instance.WriteLine("Thank you for your sponsorship. It really helps.");
             GeneralOutputPane.Instance.WriteLine("If you have ideas for new features or suggestions for new features");
             GeneralOutputPane.Instance.WriteLine("please raise an issue at https://github.com/mrlacey/CollapseComments/issues");
@@ -33,6 +36,8 @@ namespace CollapseComments
 
         private static void ShowPromptForSponsorship()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             GeneralOutputPane.Instance.WriteLine("Sorry to interrupt. I know your time is busy, presumably that's why you installed this extension (Collapse Comments).");
             GeneralOutputPane.Instance.WriteLine("I'm happy that the extensions I've created have been able to help you and many others");
             GeneralOutputPane.Instance.WriteLine("but I also need to make a living, and two years without work and extended periods of illness have been a challenge. - I didn't qualify for any government support either. :(");
