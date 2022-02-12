@@ -15,11 +15,15 @@ namespace CollapseComments
             {
                 if (new Random().Next(1, 10) == 2)
                 {
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
                     ShowThanksForSponsorshipMessage();
                 }
             }
             else
             {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
                 ShowPromptForSponsorship();
             }
         }
