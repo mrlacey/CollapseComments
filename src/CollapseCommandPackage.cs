@@ -19,7 +19,7 @@ namespace CollapseComments
     [InstalledProductRegistration(Vsix.Name, Vsix.Description, Vsix.Version)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(CollapseCommandPackage.PackageGuidString)]
-    [ProvideOptionPage(typeof(OptionsPageGrid), "Collapse Comments", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(OptionsPageGrid), Vsix.Name, "General", 0, 0, true)]
     public sealed class CollapseCommandPackage : AsyncPackage
     {
         public const string PackageGuidString = "02438993-d9fa-42ae-b30e-c4058e2136b3";
