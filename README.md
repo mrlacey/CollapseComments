@@ -6,8 +6,8 @@
 ![Works with Visual Studio 2019](https://img.shields.io/static/v1.svg?label=VS&message=2019&color=5F2E96)
 ![Works with Visual Studio 2022](https://img.shields.io/static/v1.svg?label=VS&message=2022&color=A853C7)
 
-Download this extension from the VS Gallery [for VS 2017 & 2019](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments2019)
-or [VS2022](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments)).
+Download this extension from the VS Gallery for [VS 2017 & 2019](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments2019)
+or [VS2022](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments).
 
 ---------------------------------------
 
