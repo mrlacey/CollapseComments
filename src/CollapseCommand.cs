@@ -32,9 +32,18 @@ namespace CollapseComments
             Instance = new CollapseCommand(package, commandService);
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void Execute(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            await this.ExecuteAsync(Mode.CollapseComments);
+            try
+            {
+                await this.ExecuteAsync(Mode.CollapseComments);
+            }
+            catch (Exception exc)
+            {
+                System.Diagnostics.Debug.WriteLine(exc);
+            }
         }
     }
 }
