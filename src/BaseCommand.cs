@@ -2,7 +2,9 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
@@ -20,47 +22,79 @@ namespace CollapseComments
         protected CollapseCommandPackage package;
 #pragma warning restore SA1401 // Fields should be private
 
+        private IWpfTextViewHost viewHost;
+        private IOutliningManager subscribedMgr;
+
         protected Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
-        protected async System.Threading.Tasks.Task ExecuteAsync(Mode mode)
+        protected async Task ExecuteAsync(Mode mode)
         {
-            IVsTextManager txtMgr = (IVsTextManager)await this.ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
-            if (txtMgr == null)
+            try
             {
-                throw new ArgumentNullException(nameof(txtMgr));
-            }
+                var txtMgr = (IVsTextManager)await this.ServiceProvider.GetServiceAsync(typeof(SVsTextManager));
+                if (txtMgr == null)
+                {
+                    throw new ArgumentNullException(nameof(txtMgr));
+                }
 
-            int mustHaveFocus = 1;
-            txtMgr.GetActiveView(mustHaveFocus, null, out var vTextView);
-            if (!(vTextView is IVsUserData userData))
+                int mustHaveFocus = 1;
+                txtMgr.GetActiveView(mustHaveFocus, null, out var vTextView);
+                if (!(vTextView is IVsUserData userData))
+                {
+                    System.Diagnostics.Debug.WriteLine("No text view is currently open");
+                    return;
+                }
+
+                var guidViewHost = Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost;
+                userData.GetData(ref guidViewHost, out var holder);
+                this.viewHost = (IWpfTextViewHost)holder;
+
+                var componentModel = (IComponentModel)await this.ServiceProvider.GetServiceAsync(typeof(SComponentModel));
+                IOutliningManagerService outliningManagerService = null;
+
+                int loopCounter = 0;
+
+                while (outliningManagerService == null && loopCounter < 30)
+                {
+                    await Task.Delay(100);
+                    outliningManagerService = componentModel?.GetService<IOutliningManagerService>();
+                    loopCounter++;
+                }
+
+                IOutliningManager mgr = null;
+
+                while (mgr == null && loopCounter < 40)
+                {
+                    await Task.Delay(100);
+                    mgr = outliningManagerService?.GetOutliningManager(this.viewHost.TextView);
+                    loopCounter++;
+                }
+
+                List<ICollapsible> regions = null;
+
+                while ((regions == null || !regions.Any()) && loopCounter < 40)
+                {
+                    await Task.Delay(100);
+                    regions = mgr?.GetAllRegions(new SnapshotSpan(this.viewHost.TextView.TextSnapshot, 0, this.viewHost.TextView.TextSnapshot.Length))
+                                  .ToList();
+
+                    System.Diagnostics.Debug.WriteLine($"LOOP:3: '{loopCounter}' > {regions?.Count.ToString() ?? "-"}");
+
+                    loopCounter++;
+                }
+
+                this.ActUponRegions(mgr, regions, mode);
+            }
+            catch (Exception exc)
             {
-                Console.WriteLine("No text view is currently open");
-                return;
+                System.Diagnostics.Debug.WriteLine(exc);
             }
+        }
 
-            var guidViewHost = Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost;
-            userData.GetData(ref guidViewHost, out var holder);
-            var viewHost = (IWpfTextViewHost)holder;
-
-            var componentModel = (IComponentModel)await this.ServiceProvider.GetServiceAsync(typeof(SComponentModel));
-            var outliningManagerService = componentModel?.GetService<IOutliningManagerService>();
-
-            var mgr = outliningManagerService?.GetOutliningManager(viewHost.TextView);
-
-            var regions = mgr?.GetAllRegions(new SnapshotSpan(viewHost.TextView.TextSnapshot, 0, viewHost.TextView.TextSnapshot.Length))
-                              .ToList();
-
+        private void ActUponRegions(IOutliningManager mgr, List<ICollapsible> regions, Mode actionMode, bool isCallback = false)
+        {
             var includeDirectives = this.package.Options.IncludeUsingDirectives;
 
-            // Support XMLDoc format comments
-            //  <summary>
-            //  Some details.
-            //  </summary>
-            //
-            // and support generated comments from decompiled code
-            // //
-            // // Summary:
-            // //   Some details.
             bool IsComment(string collapsedText)
             {
                 return collapsedText.StartsWith("/")
@@ -70,8 +104,8 @@ namespace CollapseComments
 
             bool IsUsing(string collapsedText)
             {
-                return collapsedText.Contains("\r\nusing ")
-                    || collapsedText.Contains("\r\nImports");
+                // handle newline as \r\n or just \n
+                return collapsedText.Contains("\nusing ");
             }
 
             bool HasNestedCommentRegion(int regionId, int end)
@@ -80,7 +114,7 @@ namespace CollapseComments
                 {
                     var region = regions[i];
 
-                    var regionStart = region.Extent.GetSpan(viewHost.TextView.TextSnapshot).Start;
+                    var regionStart = region.Extent.GetSpan(this.viewHost.TextView.TextSnapshot).Start;
 
                     if (regionStart < end)
                     {
@@ -96,9 +130,8 @@ namespace CollapseComments
                 return false;
             }
 
-            if (regions != null)
+            if (regions != null && regions.Any())
             {
-                // var sortedRegions = regions.OrderBy(r => r.)
                 var regionCount = regions.Count();
 
                 for (int i = 0; i < regionCount; i++)
@@ -110,9 +143,9 @@ namespace CollapseComments
                         continue;
                     }
 
-                    if (mode == Mode.CollapseComments && region.IsCollapsed)
+                    if (actionMode == Mode.CollapseComments && region.IsCollapsed)
                     {
-                        // CollapseComments doesn't change any non-comment regions.
+                        // Don't change any non-comment regions.
                         continue;
                     }
 
@@ -125,15 +158,18 @@ namespace CollapseComments
                             continue;
                         }
 
-                        if (mode == Mode.CollapseComments || mode == Mode.ToggleComments)
+                        if (actionMode == Mode.CollapseComments
+                            || actionMode == Mode.ToggleComments)
                         {
                             if (!region.IsCollapsed && region.IsCollapsible)
                             {
-                                mgr.TryCollapse(region);
+                                var collapsed = mgr.TryCollapse(region);
+
+                                System.Diagnostics.Debug.WriteLine(collapsed);
                             }
                         }
-
-                        if (mode == Mode.ExpandComments || mode == Mode.ToggleComments)
+                        else if (actionMode == Mode.ExpandComments
+                            || actionMode == Mode.ToggleComments)
                         {
                             if (region.IsCollapsed && region is ICollapsed collapsed)
                             {
@@ -143,11 +179,11 @@ namespace CollapseComments
                     }
                     else
                     {
-                        if (mode == Mode.ExpandComments)
+                        if (actionMode == Mode.ExpandComments)
                         {
                             if (!region.IsCollapsed && region.IsCollapsible)
                             {
-                                var hasNested = HasNestedCommentRegion(i, region.Extent.GetSpan(viewHost.TextView.TextSnapshot).End);
+                                var hasNested = HasNestedCommentRegion(i, region.Extent.GetSpan(this.viewHost.TextView.TextSnapshot).End);
 
                                 if (!hasNested)
                                 {
@@ -156,6 +192,31 @@ namespace CollapseComments
                             }
                         }
                     }
+                }
+            }
+            else if (actionMode == Mode.CollapseComments && !isCallback)
+            {
+                if (mgr != null && mgr.Enabled)
+                {
+                    this.subscribedMgr = mgr;
+                    mgr.RegionsChanged += this.Mgr_RegionsChanged;
+                }
+            }
+        }
+
+        private void Mgr_RegionsChanged(object sender, RegionsChangedEventArgs e)
+        {
+            if (sender is IOutliningManager outliningManager && outliningManager.Enabled)
+            {
+                this.subscribedMgr.RegionsChanged -= this.Mgr_RegionsChanged;
+                this.subscribedMgr = null;
+
+                if (this.viewHost != null)
+                {
+                    var regions = outliningManager?.GetAllRegions(new SnapshotSpan(this.viewHost.TextView.TextSnapshot, 0, this.viewHost.TextView.TextSnapshot.Length))
+                                                   .ToList();
+
+                    this.ActUponRegions(outliningManager, regions, Mode.CollapseComments, isCallback: true);
                 }
             }
         }
