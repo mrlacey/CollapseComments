@@ -35,7 +35,7 @@
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="D" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="F" />
-      <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="G" />
+      <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="K" />
   </KeyBindings>
 
   <CommandPlacements>
