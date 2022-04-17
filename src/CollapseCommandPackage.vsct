@@ -16,7 +16,7 @@
       </Button>
       <Button guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" priority="0x0100" type="Button">
         <Strings>
-          <ButtonText>Expand Only Comments</ButtonText>
+          <ButtonText>Expand Comments</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" priority="0x0100" type="Button">
@@ -24,12 +24,18 @@
           <ButtonText>Toggle Comments</ButtonText>
         </Strings>
       </Button>
+		<Button guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" priority="0x0100" type="Button">
+			<Strings>
+				<ButtonText>Definitions plus Comments</ButtonText>
+			</Strings>
+		</Button>
     </Buttons>
   </Commands>
   <KeyBindings>
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="D" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="F" />
+      <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="G" />
   </KeyBindings>
 
   <CommandPlacements>
@@ -53,6 +59,9 @@
       <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" priority="0x0602">
           <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
       </CommandPlacement>
+	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" priority="0x0603">
+		  <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
+	  </CommandPlacement>
   </CommandPlacements>
 
   <Symbols>
@@ -63,6 +72,7 @@
         <IDSymbol name="CollapseCommandId" value="0x0100" />
         <IDSymbol name="ExpandCommandId" value="0x0200" />
         <IDSymbol name="ToggleCommandId" value="0x0300" />
+		<IDSymbol name="DefinitionsPlusCommandId" value="0x0400" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

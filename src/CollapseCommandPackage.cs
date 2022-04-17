@@ -21,6 +21,8 @@ namespace CollapseComments
     [ProvideOptionPage(typeof(OptionsPageGrid), Vsix.Name, "General", 0, 0, true)]
     public sealed class CollapseCommandPackage : AsyncPackage
     {
+        internal static DTE2 Dte;
+
         public OptionsPageGrid Options
         {
             get
@@ -38,12 +40,13 @@ namespace CollapseComments
             await CollapseCommand.InitializeAsync(this);
             await ExpandCommand.InitializeAsync(this);
             await ToggleCommand.InitializeAsync(this);
+            await DefinitionsPlusCommand.InitializeAsync(this);
 
             var runningDocumentTable = new RunningDocumentTable(this);
 
-            var dte = await this.GetServiceAsync(typeof(DTE)) as DTE2;
+            CollapseCommandPackage.Dte = await this.GetServiceAsync(typeof(DTE)) as DTE2;
 
-            MyRunningDocTableEvents.Instance.Initialize(this, runningDocumentTable, dte);
+            MyRunningDocTableEvents.Instance.Initialize(this, runningDocumentTable, Dte);
 
             runningDocumentTable.Advise(MyRunningDocTableEvents.Instance);
 

@@ -27,5 +27,6 @@ namespace CollapseComments
         public const int CollapseCommandId = 0x0100;
         public const int ExpandCommandId = 0x0200;
         public const int ToggleCommandId = 0x0300;
+        public const int DefinitionsPlusCommandId = 0x0400;
     }
 }

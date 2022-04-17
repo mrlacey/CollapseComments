@@ -108,86 +108,57 @@ namespace CollapseComments
                 return collapsedText.Contains("\nusing ");
             }
 
-            bool HasNestedCommentRegion(int regionId, int end)
-            {
-                for (int i = regionId + 1; i < regions.Count; i++)
-                {
-                    var region = regions[i];
-
-                    var regionStart = region.Extent.GetSpan(this.viewHost.TextView.TextSnapshot).Start;
-
-                    if (regionStart < end)
-                    {
-                        var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
-
-                        if (IsComment(hiddenText))
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-
             if (regions != null && regions.Any())
             {
                 var regionCount = regions.Count();
 
-                for (int i = 0; i < regionCount; i++)
+                if (actionMode == Mode.DefinitionsPlusComments)
                 {
-                    var region = regions[i];
-
-                    if (!region.IsCollapsible)
+                    CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseToDefinitions");
+                    CollapseCommandPackage.Dte.ExecuteCommand("Edit.ExpandComments");
+                }
+                else
+                {
+                    for (int i = 0; i < regionCount; i++)
                     {
-                        continue;
-                    }
+                        var region = regions[i];
 
-                    if (actionMode == Mode.CollapseComments && region.IsCollapsed)
-                    {
-                        // Don't change any non-comment regions.
-                        continue;
-                    }
-
-                    var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
-
-                    if (IsComment(hiddenText) || IsUsing(hiddenText))
-                    {
-                        if (IsUsing(hiddenText) && !includeDirectives)
+                        if (!region.IsCollapsible)
                         {
                             continue;
                         }
 
-                        if (actionMode == Mode.CollapseComments
-                            || actionMode == Mode.ToggleComments)
+                        if (actionMode == Mode.CollapseComments && region.IsCollapsed)
                         {
-                            if (!region.IsCollapsed && region.IsCollapsible)
-                            {
-                                var collapsed = mgr.TryCollapse(region);
-
-                                System.Diagnostics.Debug.WriteLine(collapsed);
-                            }
+                            // Don't change any non-comment regions.
+                            continue;
                         }
-                        else if (actionMode == Mode.ExpandComments
-                            || actionMode == Mode.ToggleComments)
-                        {
-                            if (region.IsCollapsed && region is ICollapsed collapsed)
-                            {
-                                mgr.Expand(collapsed);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (actionMode == Mode.ExpandComments)
-                        {
-                            if (!region.IsCollapsed && region.IsCollapsible)
-                            {
-                                var hasNested = HasNestedCommentRegion(i, region.Extent.GetSpan(this.viewHost.TextView.TextSnapshot).End);
 
-                                if (!hasNested)
+                        var hiddenText = region.Extent.GetText(region.Extent.TextBuffer.CurrentSnapshot);
+
+                        if (IsComment(hiddenText) || IsUsing(hiddenText))
+                        {
+                            if (IsUsing(hiddenText) && !includeDirectives)
+                            {
+                                continue;
+                            }
+
+                            if (actionMode == Mode.CollapseComments
+                             || actionMode == Mode.ToggleComments)
+                            {
+                                if (!region.IsCollapsed && region.IsCollapsible)
                                 {
-                                    mgr.TryCollapse(region);
+                                    var collapsed = mgr.TryCollapse(region);
+
+                                    System.Diagnostics.Debug.WriteLine(collapsed);
+                                }
+                            }
+                            else if (actionMode == Mode.ExpandComments
+                                  || actionMode == Mode.ToggleComments)
+                            {
+                                if (region.IsCollapsed && region is ICollapsed collapsed)
+                                {
+                                    mgr.Expand(collapsed);
                                 }
                             }
                         }
