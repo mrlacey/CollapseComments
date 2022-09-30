@@ -18,6 +18,8 @@ Simple VSIX extension that adds a command to collapse comments in the open file.
 - Ctrl+M, Ctrl+C collapses all comments (and using/Import statements)
 - Ctrl+M, Ctrl+D expands all comments and closes all other areas
 - Ctrl+M, Ctrl+F toggles all comments
+- Ctrl+M, Ctrl+K Collapse to definitions and show comments
+- Ctrl+M, Ctrl+E Collapse to definitions and collapse comments
 - _Should_ work with all file types that have the concept of comments
 - Can also collapse (or expand) using/import directives
 - Can be configured to collapse comments when a document is opened
