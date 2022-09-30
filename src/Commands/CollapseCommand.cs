@@ -10,14 +10,12 @@ namespace CollapseComments
 {
     internal sealed class CollapseCommand : BaseCommand
     {
-        public const int CommandId = 0x0100;
-
         private CollapseCommand(CollapseCommandPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(CommandSet, CommandId);
+            var menuCommandID = new CommandID(CommandSet, PackageIds.CollapseCommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }

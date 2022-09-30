@@ -7,6 +7,7 @@
   <Commands package="guidCollapseCommandPackage">
     <Groups>
       <Group guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" />
+	  <Group guid="guidCollapseCommandPackageCmdSet" id="CodeContextGroup" priority="0x0600" />
     </Groups>
     <Buttons>
       <Button guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0100" type="Button">
@@ -19,37 +20,61 @@
           <ButtonText>Expand Comments</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" priority="0x0100" type="Button">
-        <Strings>
-          <ButtonText>Toggle Comments</ButtonText>
-        </Strings>
-      </Button>
+		<Button guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" priority="0x0100" type="Button">
+			<Strings>
+				<ButtonText>Toggle Comments</ButtonText>
+			</Strings>
+		</Button>
+		<Button guid="guidCollapseCommandPackageCmdSet" id="CollapseAllCommandId" priority="0x0100" type="Button">
+			<Strings>
+				<ButtonText>Collapse Definitions AND Comments</ButtonText>
+			</Strings>
+		</Button>
 		<Button guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" priority="0x0100" type="Button">
 			<Strings>
-				<ButtonText>Definitions plus Comments</ButtonText>
+				<ButtonText>Collapse Definitions, Show Comments</ButtonText>
 			</Strings>
 		</Button>
     </Buttons>
+	  <Menus>
+		  <Menu guid="guidCollapseCommandPackageCmdSet" id="CodeContextMenu" type="Context" priority="0x0100">
+			  <Strings>
+				  <ButtonText>Collapse Comments</ButtonText>
+			  </Strings>
+		  </Menu>
+	  </Menus>
   </Commands>
+
+	<VisibilityConstraints>
+		<VisibilityItem guid="guidCollapseCommandPackageCmdSet" id="CodeContextMenu" context="GUID_TextEditorFactory" />
+	</VisibilityConstraints>
+	
   <KeyBindings>
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="D" />
-      <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="F" />
+	  <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ToggleCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="F" />
+	  <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseAllCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="E" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="K" />
   </KeyBindings>
 
   <CommandPlacements>
-    <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
-      <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT" />
+    <!--<CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT" />-->
       <!--<Parent guid="guidSHLMainMenu" id="{9ADF33D0-8AAD-11D0-B606-00A0C922E851}"/>-->
         
       <!-- Below is for the outlining menu but not working - may need to allow for it to be in a subgroup? -->
       <!--<Parent guid="guidStdEditor" id="IDM_VS_EDITOR_OUTLINING_MENU" />-->
-    </CommandPlacement>
-    <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
-      <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>-->
-        <Parent guid="guidStdEditor" id="IDM_VS_EDITOR_CSCD_OUTLINING_MENU"/>
-    </CommandPlacement>
+    <!--</CommandPlacement>-->
+	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CodeContextGroup" priority="0x0600" >
+		  <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>-->
+		  <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT"/>
+	  </CommandPlacement>
+	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CodeContextMenu" priority="0x0600" >
+		  <Parent guid="guidCollapseCommandPackageCmdSet" id="CodeContextGroup"/>
+	  </CommandPlacement>
+	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
+		  <Parent guid="guidCollapseCommandPackageCmdSet" id="CodeContextMenu"/>
+	  </CommandPlacement>
       <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" priority="0x0600">
           <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
       </CommandPlacement>
@@ -60,6 +85,9 @@
           <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
       </CommandPlacement>
 	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="DefinitionsPlusCommandId" priority="0x0603">
+		  <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
+	  </CommandPlacement>
+	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CollapseAllCommandId" priority="0x0604">
 		  <Parent guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" />
 	  </CommandPlacement>
   </CommandPlacements>
@@ -73,6 +101,9 @@
         <IDSymbol name="ExpandCommandId" value="0x0200" />
         <IDSymbol name="ToggleCommandId" value="0x0300" />
 		<IDSymbol name="DefinitionsPlusCommandId" value="0x0400" />
+		<IDSymbol name="CollapseAllCommandId" value="0x0500" />
+		<IDSymbol name="CodeContextGroup" value="0x1100" />
+		<IDSymbol name="CodeContextMenu" value="0x1200" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

@@ -41,6 +41,7 @@ namespace CollapseComments
             await ExpandCommand.InitializeAsync(this);
             await ToggleCommand.InitializeAsync(this);
             await DefinitionsPlusCommand.InitializeAsync(this);
+            await CollapseAllCommand.InitializeAsync(this);
 
             var runningDocumentTable = new RunningDocumentTable(this);
 

@@ -16,7 +16,7 @@ namespace CollapseComments
 {
     internal class BaseCommand
     {
-        public static readonly Guid CommandSet = new Guid("fafe8ebd-e623-491e-8e27-5543153918c8");
+        public static readonly Guid CommandSet = PackageGuids.guidCollapseCommandPackageCmdSet;
 
 #pragma warning disable SA1401 // Fields should be private
         protected CollapseCommandPackage package;
@@ -25,7 +25,7 @@ namespace CollapseComments
         private IWpfTextViewHost viewHost;
         private IOutliningManager subscribedMgr;
 
-        protected Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
+        protected IAsyncServiceProvider ServiceProvider => this.package;
 
         protected async Task ExecuteAsync(Mode mode)
         {
@@ -112,6 +112,12 @@ namespace CollapseComments
             {
                 var regionCount = regions.Count();
 
+                if (actionMode == Mode.CollapseAll)
+                {
+                    CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseToDefinitions");
+                    CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseComments");
+                }
+                else
                 if (actionMode == Mode.DefinitionsPlusComments)
                 {
                     CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseToDefinitions");

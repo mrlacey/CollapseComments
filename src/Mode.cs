@@ -12,5 +12,7 @@ namespace CollapseComments
         ToggleComments,
 
         DefinitionsPlusComments,
+
+        CollapseAll,
     }
 }

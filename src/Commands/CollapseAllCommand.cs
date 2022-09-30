@@ -8,26 +8,26 @@ using Task = System.Threading.Tasks.Task;
 
 namespace CollapseComments
 {
-    internal sealed class DefinitionsPlusCommand : BaseCommand
+    internal sealed class CollapseAllCommand : BaseCommand
     {
-        private DefinitionsPlusCommand(CollapseCommandPackage package, OleMenuCommandService commandService)
+        private CollapseAllCommand(CollapseCommandPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(CommandSet, PackageIds.DefinitionsPlusCommandId);
+            var menuCommandID = new CommandID(CommandSet, PackageIds.CollapseAllCommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }
 
-        public static DefinitionsPlusCommand Instance { get; private set; }
+        public static CollapseAllCommand Instance { get; private set; }
 
         public static async Task InitializeAsync(CollapseCommandPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new DefinitionsPlusCommand(package, commandService);
+            Instance = new CollapseAllCommand(package, commandService);
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -36,7 +36,7 @@ namespace CollapseComments
         {
             try
             {
-                await this.ExecuteAsync(Mode.DefinitionsPlusComments);
+                await this.ExecuteAsync(Mode.CollapseAll);
             }
             catch (Exception exc)
             {
