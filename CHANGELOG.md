@@ -11,6 +11,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 2.3
+
+- Fixed display of the context menu.
+
 ## 2.2
 
 - [x] Add option to collapse to definitions and collapse comments.

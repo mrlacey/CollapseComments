@@ -48,7 +48,7 @@
 	<VisibilityConstraints>
 		<VisibilityItem guid="guidCollapseCommandPackageCmdSet" id="CodeContextMenu" context="GUID_TextEditorFactory" />
 	</VisibilityConstraints>
-	
+
   <KeyBindings>
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="CollapseCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="C" />
       <KeyBinding guid="guidCollapseCommandPackageCmdSet" id="ExpandCommandId" editor="guidVSStd97" mod1="CONTROL" key1="M" mod2="CONTROL" key2="D" />
@@ -61,13 +61,13 @@
     <!--<CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600" >
       <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT" />-->
       <!--<Parent guid="guidSHLMainMenu" id="{9ADF33D0-8AAD-11D0-B606-00A0C922E851}"/>-->
-        
+
       <!-- Below is for the outlining menu but not working - may need to allow for it to be in a subgroup? -->
       <!--<Parent guid="guidStdEditor" id="IDM_VS_EDITOR_OUTLINING_MENU" />-->
     <!--</CommandPlacement>-->
 	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CodeContextGroup" priority="0x0600" >
-		  <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>-->
-		  <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT"/>
+		  <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+		  <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT"/>-->
 	  </CommandPlacement>
 	  <CommandPlacement guid="guidCollapseCommandPackageCmdSet" id="CodeContextMenu" priority="0x0600" >
 		  <Parent guid="guidCollapseCommandPackageCmdSet" id="CodeContextGroup"/>
