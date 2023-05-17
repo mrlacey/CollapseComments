@@ -11,6 +11,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 2.4
+
+- Handle the collapsing of lines that start with a doubel slash, even if not followed by a space.
+
 ## 2.3
 
 - Fixed display of the context menu.

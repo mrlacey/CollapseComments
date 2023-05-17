@@ -114,8 +114,11 @@ namespace CollapseComments
 
                 var isCommentOfInterest = false;
 
-                if (trimText == "//" || trimText == "////"
-                 || trimText.StartsWith("// ") || trimText.StartsWith("////"))
+                //if (trimText == "//" || trimText == "////"
+                // || trimText.StartsWith("// ") || trimText.StartsWith("////")
+                //// || (trimText.StartsWith("//") && trimText.Length > 2 && trimText[2] != '/'))
+                // Handle any line that starts with doubel slash, whether followed by a space or not
+                if (trimText.StartsWith("//"))
                 {
                     isCommentOfInterest = true;
                 }
