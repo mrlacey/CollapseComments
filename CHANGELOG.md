@@ -13,7 +13,7 @@ on the official Visual Studio extension gallery.
 
 ## 2.4
 
-- Handle the collapsing of lines that start with a doubel slash, even if not followed by a space.
+- Handle the collapsing of lines that start with a double slash, even if not followed by a space.
 
 ## 2.3
 
