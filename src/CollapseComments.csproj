@@ -73,6 +73,7 @@
     <Compile Include="OptionsPageGrid.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Outlining\MultiLineAttributeOutlineTagger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Outlining\MultiLineStringOutlineTagger.cs" />
     <Compile Include="Outlining\RepeatedSlashCommentOutlineTagger.cs" />
