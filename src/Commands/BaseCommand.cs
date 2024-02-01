@@ -149,6 +149,7 @@ namespace CollapseComments
                                 continue;
                             }
 
+                            // TODO: fix this logic - When toggling, it won't expand if already collapsed. (& check vice-versa)
                             if (actionMode == Mode.CollapseComments
                              || actionMode == Mode.ToggleComments)
                             {

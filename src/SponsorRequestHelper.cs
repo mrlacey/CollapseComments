@@ -42,7 +42,7 @@ namespace CollapseComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            OutputPane.Instance.WriteLine("Sorry to interrupt. I know your time is busy, presumably that's why you installed this extension (Collapse Comments).");
+            OutputPane.Instance.WriteLine("Sorry to interrupt. I know your time is busy, presumably that's why you installed this extension.");
             OutputPane.Instance.WriteLine("I'm happy that the extensions I've created have been able to help you and many others");
             OutputPane.Instance.WriteLine("but I also need to make a living, and limited paid work over the last few years has been a challenge. :(");
             OutputPane.Instance.WriteLine(string.Empty);
@@ -50,6 +50,8 @@ namespace CollapseComments
             OutputPane.Instance.WriteLine(string.Empty);
             OutputPane.Instance.WriteLine("If you become a sponsor, I'll tell you how to hide this message too. ;)");
             OutputPane.Instance.WriteLine(string.Empty);
+
+            // TODO: change this to only show once the extension has been used a certain number of times.
             OutputPane.Instance.Activate();
         }
     }

@@ -17,5 +17,7 @@ namespace CollapseComments
         [DisplayName("Run when document opened")]
         [Description("Collapse all comments (and using/import directives when a document is opened.")]
         public bool RunOnDocumentOpen { get; set; } = false;
+
+        // TODO: Add an advanced logging option and remove the calls to debug out.
     }
 }

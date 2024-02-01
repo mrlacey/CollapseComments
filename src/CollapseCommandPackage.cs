@@ -31,6 +31,8 @@ namespace CollapseComments
             }
         }
 
+        // TODO: see if can check for anything else that may have registered the smae command shortcut keys.
+        // Prompt if there are conflicts and advise on how to change them.
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             // When initialized asynchronously, the current thread may be a background thread at this point.
