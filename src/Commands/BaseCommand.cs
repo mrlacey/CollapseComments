@@ -115,13 +115,13 @@ namespace CollapseComments
                 if (actionMode == Mode.CollapseAll)
                 {
                     CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseToDefinitions");
-                    CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseComments");
+                    CollapseCommandPackage.Dte.ExecuteCommand("CollapseComments.Collapse");
                 }
                 else
                 if (actionMode == Mode.DefinitionsPlusComments)
                 {
                     CollapseCommandPackage.Dte.ExecuteCommand("Edit.CollapseToDefinitions");
-                    CollapseCommandPackage.Dte.ExecuteCommand("Edit.ExpandComments");
+                    CollapseCommandPackage.Dte.ExecuteCommand("CollapseComments.Expand");
                 }
                 else
                 {
