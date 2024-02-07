@@ -11,6 +11,12 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 2.6
+
+- [x] Add option to not create undo/redo entries when collaping or expanding regions.
+- [x] Add option to see detailed logging information.
+- [x] Fix bug when toggling regions.
+
 ## 2.5
 
 - [x] Add the ability to collapse attributes that occupy multiple lines.
