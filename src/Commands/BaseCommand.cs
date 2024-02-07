@@ -165,9 +165,7 @@ namespace CollapseComments
                                 continue;
                             }
 
-                            // TODO: fix this logic - When toggling, it won't expand if already collapsed. (& check vice-versa)
-                            if (actionMode == Mode.CollapseComments
-                             || actionMode == Mode.ToggleComments)
+                            if (actionMode == Mode.CollapseComments)
                             {
                                 if (!region.IsCollapsed && region.IsCollapsible)
                                 {
@@ -176,10 +174,23 @@ namespace CollapseComments
                                     System.Diagnostics.Debug.WriteLine(collapsed);
                                 }
                             }
-                            else if (actionMode == Mode.ExpandComments
-                                  || actionMode == Mode.ToggleComments)
+                            else if (actionMode == Mode.ExpandComments)
                             {
                                 if (region.IsCollapsed && region is ICollapsed collapsed)
+                                {
+                                    mgr.Expand(collapsed);
+                                }
+                            }
+                            else if (actionMode == Mode.ToggleComments)
+                            {
+                                if (!region.IsCollapsed)
+                                {
+                                    if (region.IsCollapsible)
+                                    {
+                                        mgr.TryCollapse(region);
+                                    }
+                                }
+                                else if (region is ICollapsed collapsed)
                                 {
                                     mgr.Expand(collapsed);
                                 }
