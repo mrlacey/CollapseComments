@@ -83,7 +83,23 @@ namespace CollapseComments
                     loopCounter++;
                 }
 
-                this.ActUponRegions(mgr, regions, mode);
+                void LocalActUponRegions() => this.ActUponRegions(mgr, regions, mode);
+
+                // Avoid creating entries in the undo stack for each region if they're not wanted.
+                if (!this.package.Options.CreateUndoEntries)
+                {
+                    var currentUndoValue = this.viewHost.TextView.Options.GetOptionValue(DefaultTextViewOptions.OutliningUndoOptionId);
+
+                    this.viewHost.TextView.Options.SetOptionValue(DefaultTextViewOptions.OutliningUndoOptionId, false);
+
+                    LocalActUponRegions();
+
+                    this.viewHost.TextView.Options.SetOptionValue(DefaultTextViewOptions.OutliningUndoOptionId, currentUndoValue);
+                }
+                else
+                {
+                    LocalActUponRegions();
+                }
             }
             catch (Exception exc)
             {

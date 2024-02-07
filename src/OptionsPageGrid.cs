@@ -18,6 +18,11 @@ namespace CollapseComments
         [Description("Collapse all comments (and using/import directives when a document is opened.")]
         public bool RunOnDocumentOpen { get; set; } = false;
 
+        [Category("General")]
+        [DisplayName("Create undo/redo entries")]
+        [Description("Create entries in the Undo/Redo stack when regions are collapsed or expanded.")]
+        public bool CreateUndoEntries { get; set; } = true;
+
         // TODO: Add an advanced logging option and remove the calls to debug out.
     }
 }
