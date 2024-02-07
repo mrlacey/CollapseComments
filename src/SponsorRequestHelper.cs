@@ -11,6 +11,14 @@ namespace CollapseComments
     {
         public static async Task CheckIfNeedToShowAsync()
         {
+            var settings = await InternalSettings.GetLiveInstanceAsync();
+            if (settings.FirstUse == DateTime.MinValue)
+            {
+                // Track first known use so don't prompt too soon
+                settings.FirstUse = DateTime.UtcNow;
+                await settings.SaveAsync();
+            }
+
             if (await SponsorDetector.IsSponsorAsync())
             {
                 if (new Random().Next(1, 10) == 2)
@@ -25,6 +33,12 @@ namespace CollapseComments
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 ShowPromptForSponsorship();
+
+                if (settings.FirstUse < DateTime.UtcNow.AddDays(7)
+                    && settings.UseCount > 50)
+                {
+                    OutputPane.Instance.Activate();
+                }
             }
         }
 
@@ -50,9 +64,6 @@ namespace CollapseComments
             OutputPane.Instance.WriteLine(string.Empty);
             OutputPane.Instance.WriteLine("If you become a sponsor, I'll tell you how to hide this message too. ;)");
             OutputPane.Instance.WriteLine(string.Empty);
-
-            // TODO: change this to only show once the extension has been used a certain number of times.
-            OutputPane.Instance.Activate();
         }
     }
 }

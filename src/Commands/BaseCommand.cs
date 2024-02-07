@@ -100,6 +100,14 @@ namespace CollapseComments
                 {
                     LocalActUponRegions();
                 }
+
+                // Track usage after the command has been executed.
+                _ = System.Threading.Tasks.Task.Run(async () =>
+                {
+                    var settings = await InternalSettings.GetLiveInstanceAsync();
+                    settings.UseCount += 1;
+                    await settings.SaveAsync();
+                });
             }
             catch (Exception exc)
             {

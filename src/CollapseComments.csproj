@@ -7,6 +7,7 @@
     </NuGetPackageImportStamp>
     <UseCodebase>true</UseCodebase>
     <TargetFrameworkProfile />
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -54,8 +55,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BaseOptionModel.cs" />
     <Compile Include="Commands\CollapseAllCommand.cs" />
     <Compile Include="Commands\DefinitionsPlusCommand.cs" />
+    <Compile Include="InternalSettings.cs" />
     <Compile Include="Outlining\AllCommentsOutliningTaggerProvider.cs" />
     <Compile Include="Outlining\AllCommentsTagger.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
