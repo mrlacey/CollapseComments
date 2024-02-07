@@ -55,5 +55,13 @@ namespace CollapseComments
 
             await SponsorRequestHelper.CheckIfNeedToShowAsync();
         }
+
+        public void Log(string message)
+        {
+            if (this.Options.EnableDetailedLogging)
+            {
+                OutputPane.Instance.WriteLine(message);
+            }
+        }
     }
 }

@@ -23,6 +23,9 @@ namespace CollapseComments
         [Description("Create entries in the Undo/Redo stack when regions are collapsed or expanded.")]
         public bool CreateUndoEntries { get; set; } = true;
 
-        // TODO: Add an advanced logging option and remove the calls to debug out.
+        [Category("General")]
+        [DisplayName("Enable detailed logging")]
+        [Description("Include detailed logging in the output window.")]
+        public bool EnableDetailedLogging { get; set; } = false;
     }
 }

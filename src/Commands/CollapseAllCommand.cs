@@ -40,7 +40,10 @@ namespace CollapseComments
             }
             catch (Exception exc)
             {
-                System.Diagnostics.Debug.WriteLine(exc);
+                this.package.Log(exc.Message);
+                this.package.Log(exc.Source);
+                this.package.Log(exc.StackTrace);
+                this.package.Log(exc.InnerException.Message);
             }
         }
     }

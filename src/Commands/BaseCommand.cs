@@ -41,7 +41,7 @@ namespace CollapseComments
                 txtMgr.GetActiveView(mustHaveFocus, null, out var vTextView);
                 if (!(vTextView is IVsUserData userData))
                 {
-                    System.Diagnostics.Debug.WriteLine("No text view is currently open");
+                    this.package.Log("No text view is currently open");
                     return;
                 }
 
@@ -77,9 +77,6 @@ namespace CollapseComments
                     await Task.Delay(100);
                     regions = mgr?.GetAllRegions(new SnapshotSpan(this.viewHost.TextView.TextSnapshot, 0, this.viewHost.TextView.TextSnapshot.Length))
                                   .ToList();
-
-                    System.Diagnostics.Debug.WriteLine($"LOOP:3: '{loopCounter}' > {regions?.Count.ToString() ?? "-"}");
-
                     loopCounter++;
                 }
 
@@ -111,7 +108,10 @@ namespace CollapseComments
             }
             catch (Exception exc)
             {
-                System.Diagnostics.Debug.WriteLine(exc);
+                this.package.Log(exc.Message);
+                this.package.Log(exc.Source);
+                this.package.Log(exc.StackTrace);
+                this.package.Log(exc.InnerException.Message);
             }
         }
 
@@ -135,6 +135,8 @@ namespace CollapseComments
             if (regions != null && regions.Any())
             {
                 var regionCount = regions.Count();
+
+                this.package.Log($"Applying {actionMode} to {regionCount} regions");
 
                 if (actionMode == Mode.CollapseAll)
                 {
@@ -179,7 +181,10 @@ namespace CollapseComments
                                 {
                                     var collapsed = mgr.TryCollapse(region);
 
-                                    System.Diagnostics.Debug.WriteLine(collapsed);
+                                    if (collapsed == null)
+                                    {
+                                        this.package.Log("Failed to collapse region");
+                                    }
                                 }
                             }
                             else if (actionMode == Mode.ExpandComments)
