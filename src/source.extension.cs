@@ -11,7 +11,7 @@ namespace CollapseComments
         public const string Name = "Collapse Comments";
         public const string Description = @"Improve the way you work with comments in code by easily (& automatically) expanding and collapsing comments.";
         public const string Language = "en-US";
-        public const string Version = "2.5";
+        public const string Version = "2.6";
         public const string Author = "Matt Lacey";
         public const string Tags = "";
     }
