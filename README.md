@@ -27,7 +27,7 @@ Simple Visual Studio extension that adds commands to collapse (and expand) comme
 
 ![Commands shown in document context menu](./art/screenshot-menu.png)
 
-Please note. If the shortcuts don't seem to be working, please [check that they are not also being used by something else](https://learn.microsoft.com/en-us/visualstudio/ide/identifying-and-customizing-keyboard-shortcuts-in-visual-studio?view=vs-2022#identify-a-keyboard-shortcut).
+Please note. If the shortcuts don't seem to be working, [check that they are not also being used by something else](https://learn.microsoft.com/en-us/visualstudio/ide/identifying-and-customizing-keyboard-shortcuts-in-visual-studio?view=vs-2022#identify-a-keyboard-shortcut).
 
 See the [change log](CHANGELOG.md) for changes and roadmap.
 
