@@ -56,28 +56,66 @@ namespace CollapseComments
 
                 while (outliningManagerService == null && loopCounter < 30)
                 {
-                    await Task.Delay(100);
+                    if (loopCounter > 0)
+                    {
+                        await Task.Delay(100);
+                    }
+
                     outliningManagerService = componentModel?.GetService<IOutliningManagerService>();
                     loopCounter++;
                 }
+
+                loopCounter = 0;
 
                 IOutliningManager mgr = null;
 
                 while (mgr == null && loopCounter < 40)
                 {
-                    await Task.Delay(100);
+                    if (loopCounter > 0)
+                    {
+                        await Task.Delay(100);
+                    }
+
                     mgr = outliningManagerService?.GetOutliningManager(this.viewHost.TextView);
                     loopCounter++;
                 }
 
+                if (mgr is null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to get outlining manager");
+                    return;
+                }
+
                 List<ICollapsible> regions = null;
+
+                loopCounter = 0;
 
                 while ((regions == null || !regions.Any()) && loopCounter < 40)
                 {
-                    await Task.Delay(100);
-                    regions = mgr?.GetAllRegions(new SnapshotSpan(this.viewHost.TextView.TextSnapshot, 0, this.viewHost.TextView.TextSnapshot.Length))
-                                  .ToList();
+                    if (loopCounter > 0)
+                    {
+                        await Task.Delay(100);
+                    }
+
+                    try
+                    {
+                        regions = mgr?.GetAllRegions(new SnapshotSpan(this.viewHost.TextView.TextSnapshot, 0, this.viewHost.TextView.TextSnapshot.Length))
+                                      .ToList();
+                    }
+                    catch (Exception exc)
+                    {
+                        System.Diagnostics.Debug.WriteLine(exc);
+                        this.package.Log("Internal VS error prevented identifying collapsible regions.");
+                        return;
+                    }
+
                     loopCounter++;
+                }
+
+                if (regions is null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to get regions");
+                    return;
                 }
 
                 void LocalActUponRegions() => this.ActUponRegions(mgr, regions, mode);
@@ -111,7 +149,7 @@ namespace CollapseComments
                 this.package.Log(exc.Message);
                 this.package.Log(exc.Source);
                 this.package.Log(exc.StackTrace);
-                this.package.Log(exc.InnerException.Message);
+                this.package.Log(exc.InnerException?.Message);
             }
         }
 
