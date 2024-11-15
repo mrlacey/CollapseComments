@@ -1,12 +1,14 @@
 # Collapse Comments
 
-[![Build status](https://ci.appveyor.com/api/projects/status/cl487k8r8rcafc1d?svg=true)](https://ci.appveyor.com/project/mrlacey/collapsecomments)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 ![Works with Visual Studio 2017](https://img.shields.io/static/v1.svg?label=VS&message=2017&color=5F2E96)
 ![Works with Visual Studio 2019](https://img.shields.io/static/v1.svg?label=VS&message=2019&color=5F2E96)
 ![Works with Visual Studio 2022](https://img.shields.io/static/v1.svg?label=VS&message=2022&color=A853C7)
+![Visual Studio Marketplace 5 Stars](https://img.shields.io/badge/VS%20Marketplace-★★★★★-green)
 
-Download this extension from the VS Gallery for [VS 2017 & 2019](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments2019)
+[![Build](https://github.com/mrlacey/CollapseComments/actions/workflows/build.yaml/badge.svg)](https://github.com/mrlacey/CollapseComments/actions/workflows/build.yaml)
+
+Download this extension from the VS Marketplace for [VS 2017 & 2019](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments2019)
 or [VS2022](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.CollapseComments).
 
 ---------------------------------------
