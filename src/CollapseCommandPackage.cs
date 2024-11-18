@@ -2,10 +2,13 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -54,9 +57,44 @@ namespace CollapseComments
             runningDocumentTable.Advise(MyRunningDocTableEvents.Instance);
 
             await SponsorRequestHelper.CheckIfNeedToShowAsync();
-        }
 
-        public void Log(string message)
+			TrackBasicUsageAnalytics();
+		}
+
+		private static void TrackBasicUsageAnalytics()
+		{
+#if !DEBUG
+			try
+			{
+				if (string.IsNullOrWhiteSpace(AnalyticsConfig.TelemetryConnectionString))
+				{
+					return;
+				}
+
+				var config = new TelemetryConfiguration
+				{
+					ConnectionString = AnalyticsConfig.TelemetryConnectionString,
+				};
+
+				var client = new TelemetryClient(config);
+
+				var properties = new Dictionary<string, string>
+				{
+					{ "VsixVersion", Vsix.Version },
+					{ "VsVersion", Microsoft.VisualStudio.Telemetry.TelemetryService.DefaultSession?.GetSharedProperty("VS.Core.ExeVersion") },
+				};
+
+				client.TrackEvent(Vsix.Name, properties);
+			}
+			catch (Exception exc)
+			{
+				System.Diagnostics.Debug.WriteLine(exc);
+				OutputPane.Instance.WriteLine("Error tracking usage analytics: " + exc.Message);
+			}
+#endif
+		}
+
+		public void Log(string message)
         {
             if (this.Options.EnableDetailedLogging)
             {
