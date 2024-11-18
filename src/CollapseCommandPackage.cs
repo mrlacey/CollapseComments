@@ -60,7 +60,7 @@ namespace CollapseComments
         {
             if (this.Options.EnableDetailedLogging)
             {
-                OutputPane.Instance.WriteLine(message);
+				OutputPane.Instance.WriteLine(message);
             }
         }
     }
