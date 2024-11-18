@@ -18,9 +18,7 @@ namespace CollapseComments
     {
         public static readonly Guid CommandSet = PackageGuids.guidCollapseCommandPackageCmdSet;
 
-#pragma warning disable SA1401 // Fields should be private
         protected CollapseCommandPackage package;
-#pragma warning restore SA1401 // Fields should be private
 
         private IWpfTextViewHost viewHost;
         private IOutliningManager subscribedMgr;
@@ -155,7 +153,9 @@ namespace CollapseComments
 
         private void ActUponRegions(IOutliningManager mgr, List<ICollapsible> regions, Mode actionMode, bool isCallback = false)
         {
-            var includeDirectives = this.package.Options.IncludeUsingDirectives;
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+			var includeDirectives = this.package.Options.IncludeUsingDirectives;
 
             bool IsComment(string collapsedText)
             {

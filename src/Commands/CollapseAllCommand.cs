@@ -36,7 +36,9 @@ namespace CollapseComments
         {
             try
             {
-                await this.ExecuteAsync(Mode.CollapseAll);
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+				await this.ExecuteAsync(Mode.CollapseAll);
             }
             catch (Exception exc)
             {

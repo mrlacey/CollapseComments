@@ -75,7 +75,10 @@ namespace CollapseComments
                     {
                         await Task.Yield(); // get off the caller's callstack.
                         await Task.Delay(200); // Give the document time to load as command won't work until outlining has loaded.
-                        this.dte.ExecuteCommand("CollapseComments.Collapse");
+
+						await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+						this.dte.ExecuteCommand("CollapseComments.Collapse");
                     });
                 }
             }
