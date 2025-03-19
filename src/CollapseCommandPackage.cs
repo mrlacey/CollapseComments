@@ -42,7 +42,9 @@ namespace CollapseComments
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            await CollapseCommand.InitializeAsync(this);
+			await OutputPane.Instance.WriteAsync($"{Vsix.Name} v{Vsix.Version}");
+
+			await CollapseCommand.InitializeAsync(this);
             await ExpandCommand.InitializeAsync(this);
             await ToggleCommand.InitializeAsync(this);
             await DefinitionsPlusCommand.InitializeAsync(this);
