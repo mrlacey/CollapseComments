@@ -71,7 +71,8 @@ namespace CollapseComments
                 if (this.package.Options.RunOnDocumentOpen)
                 {
                     // Offload to a background thread
-                    this.package.JoinableTaskFactory.Run(async () =>
+                    // Do this Async to workaround timing issues (X-Ref Issue #37)
+                    this.package.JoinableTaskFactory.RunAsync(async () =>
                     {
                         await Task.Yield(); // get off the caller's callstack.
                         await Task.Delay(200); // Give the document time to load as command won't work until outlining has loaded.
